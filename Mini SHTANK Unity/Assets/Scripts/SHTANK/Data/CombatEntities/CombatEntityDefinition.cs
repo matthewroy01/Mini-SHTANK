@@ -21,7 +21,7 @@ namespace SHTANK.Data.CombatEntities
         [SerializeField] private CombatEntityType _combatEntityType;
         
         [Header("Info")]
-        [SerializeField] private string _entityName = "Default Entity Type";
+        [SerializeField] private string _entityName = "Default Entity Card";
         [TextArea(3, 10)]
         [SerializeField] private string _entityDescription = "Default Entity Description";
 
