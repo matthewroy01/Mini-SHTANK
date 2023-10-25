@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Pool;
 
 namespace SHTANK.Grid
 {
@@ -7,12 +8,16 @@ namespace SHTANK.Grid
         public GridSpace[,] GridSpaceArray => _gridSpaceArray;
         
         private readonly GridSpace[,] _gridSpaceArray;
+        private Vector3 _spawnPosition;
 
-        public GridContainer(uint width, uint height)
+        public GridContainer(uint width, uint height, ObjectPool<GridSpaceObject> objectPool)
         {
             _gridSpaceArray = new GridSpace[width, height];
+            
+            _spawnPosition.y = 0.0f;
 
             int x, y;
+            string id = "";
             
             _PopulateArray();
             _SetConnections();
@@ -23,8 +28,10 @@ namespace SHTANK.Grid
                 {
                     for (y = 0; y < _gridSpaceArray.GetLength(1); ++y)
                     {
-                        string id = "(" + x + ", " + y + ")";
+                        id = "(" + x + ", " + y + ")";
                         _gridSpaceArray[x, y] = new GridSpace(id);
+                        
+                        _CreateAndPositionGridSpaceObject();
                     }
                 }
             }
@@ -48,6 +55,16 @@ namespace SHTANK.Grid
                         _gridSpaceArray[x, y].SetConnections(up, down, left, right, upLeft, upRight, downLeft, downRight);
                     }
                 }
+            }
+
+            void _CreateAndPositionGridSpaceObject()
+            {
+                _spawnPosition.x = x;
+                _spawnPosition.z = y;
+                
+                GridSpaceObject tmp = objectPool.Get();
+                tmp.transform.position = _spawnPosition;
+                tmp.gameObject.name = "GridSpaceObject " + id;
             }
         }
     }
