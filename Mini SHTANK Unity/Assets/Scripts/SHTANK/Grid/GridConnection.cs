@@ -1,16 +1,21 @@
-﻿namespace SHTANK.Grid
+﻿using System;
+using UnityEngine;
+using NaughtyAttributes;
+
+namespace SHTANK.Grid
 {
+    [Serializable]
     public class GridConnection
     {
-        public GridSpace GridSpace => _gridSpace;
+        public GridSpaceObject GridSpaceObject => _gridSpaceObject;
         public float Weight => _weight;
 
-        private GridSpace _gridSpace;
-        private float _weight;
+        [ReadOnly] [SerializeField] private GridSpaceObject _gridSpaceObject;
+        [ReadOnly] [SerializeField] private float _weight;
 
-        public GridConnection(GridSpace gridSpace, float weight)
+        public GridConnection(GridSpaceObject gridSpaceObjectObject, float weight)
         {
-            _gridSpace = gridSpace;
+            _gridSpaceObject = gridSpaceObjectObject;
             _weight = weight;
         }
     }

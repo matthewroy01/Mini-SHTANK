@@ -1,7 +1,11 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
+using NaughtyAttributes;
+using UnityEngine;
 
 namespace SHTANK.Grid
 {
+    [Serializable]
     public class GridConnections
     {
         public GridConnection Up => _up;
@@ -13,20 +17,20 @@ namespace SHTANK.Grid
         public GridConnection DownLeft => _downLeft;
         public GridConnection DownRight => _downRight;
 
-        private readonly GridConnection _up;
-        private readonly GridConnection _down;
-        private readonly GridConnection _left;
-        private readonly GridConnection _right;
-        private readonly GridConnection _upLeft;
-        private readonly GridConnection _upRight;
-        private readonly GridConnection _downLeft;
-        private readonly GridConnection _downRight;
+        [ReadOnly] [SerializeField] private GridConnection _up;
+        [ReadOnly] [SerializeField] private GridConnection _down;
+        [ReadOnly] [SerializeField] private GridConnection _left;
+        [ReadOnly] [SerializeField] private GridConnection _right;
+        [ReadOnly] [SerializeField] private GridConnection _upLeft;
+        [ReadOnly] [SerializeField] private GridConnection _upRight;
+        [ReadOnly] [SerializeField] private GridConnection _downLeft;
+        [ReadOnly] [SerializeField] private GridConnection _downRight;
         
         private const float CARDINAL_WEIGHT = 1.0f;
         private const float DIAGONAL_WEIGHT = 2.0f;
 
-        public GridConnections(GridSpace up, GridSpace down, GridSpace left, GridSpace right,
-            GridSpace upLeft, GridSpace upRight, GridSpace downLeft, GridSpace downRight)
+        public GridConnections(GridSpaceObject up, GridSpaceObject down, GridSpaceObject left, GridSpaceObject right,
+            GridSpaceObject upLeft, GridSpaceObject upRight, GridSpaceObject downLeft, GridSpaceObject downRight)
         {
             _up = CreateGridConnection(up, false);
             _down = CreateGridConnection(down, false);
@@ -38,9 +42,9 @@ namespace SHTANK.Grid
             _downRight = CreateGridConnection(downRight, true);
         }
 
-        private GridConnection CreateGridConnection(GridSpace gridSpace, bool diagonal)
+        private GridConnection CreateGridConnection(GridSpaceObject gridSpaceObject, bool diagonal)
         {
-            return gridSpace == null ? null : new GridConnection(gridSpace, diagonal ? DIAGONAL_WEIGHT : CARDINAL_WEIGHT);
+            return gridSpaceObject == null ? null : new GridConnection(gridSpaceObject, diagonal ? DIAGONAL_WEIGHT : CARDINAL_WEIGHT);
         }
     }
 }
