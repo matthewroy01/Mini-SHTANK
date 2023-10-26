@@ -1,4 +1,6 @@
-﻿namespace SHTANK.Grid
+﻿using System.Collections.Generic;
+
+namespace SHTANK.Grid
 {
     public static class GridHelper
     {
