@@ -78,6 +78,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 18913757534234059}
+  _gridConnections:
+    _up:
+      _gridSpaceObject: {fileID: 0}
+      _weight: 0
+    _down:
+      _gridSpaceObject: {fileID: 0}
+      _weight: 0
+    _left:
+      _gridSpaceObject: {fileID: 0}
+      _weight: 0
+    _right:
+      _gridSpaceObject: {fileID: 0}
+      _weight: 0
+    _upLeft:
+      _gridSpaceObject: {fileID: 0}
+      _weight: 0
+    _upRight:
+      _gridSpaceObject: {fileID: 0}
+      _weight: 0
+    _downLeft:
+      _gridSpaceObject: {fileID: 0}
+      _weight: 0
+    _downRight:
+      _gridSpaceObject: {fileID: 0}
+      _weight: 0
+  _gridSpaceType: 0
+  _id: 
+  _intWorldPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &18913757534234061
 GameObject:
   m_ObjectHideFlags: 0
@@ -89,7 +117,6 @@ GameObject:
   - component: {fileID: 18913757534234057}
   - component: {fileID: 18913757534234056}
   - component: {fileID: 18913757534234059}
-  - component: {fileID: 18913757534234058}
   m_Layer: 0
   m_Name: Quad
   m_TagString: Untagged
@@ -162,17 +189,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &18913757534234058
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 18913757534234061}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
