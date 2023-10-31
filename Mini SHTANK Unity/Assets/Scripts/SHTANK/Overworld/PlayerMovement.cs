@@ -29,12 +29,12 @@ namespace SHTANK.Overworld
             _inputManager = InputManager.Instance;
         }
 
-        private void Update()
+        public void MyUpdate()
         {
             Jumping();
         }
 
-        private void FixedUpdate()
+        public void MyFixedUpdate()
         {
             Movement();
             TerminalVelocity();

@@ -4,12 +4,14 @@ using UnityEngine.SocialPlatforms;
 
 namespace SHTANK.Data.CombatEntities
 {
-    [CreateAssetMenu(fileName = "New Combat Entity Definition", menuName = "SHTANK/CombatEntityDefinition", order = 0)]
+    [CreateAssetMenu(fileName = "New Combat Entity Definition", menuName = "SHTANK/Combat Entity Definition", order = 0)]
     public class CombatEntityDefinition : ScriptableObject
     {
         public CombatEntityType CombatEntityType => _combatEntityType;
         
         public string EntityName => _entityName;
+        public string EntityDescription => _entityDescription;
+        public Sprite Sprite => _sprite;
 
         public int Health => _health;
         public int Attack => _attack;
@@ -24,6 +26,8 @@ namespace SHTANK.Data.CombatEntities
         [SerializeField] private string _entityName = "Default Entity Card";
         [TextArea(3, 10)]
         [SerializeField] private string _entityDescription = "Default Entity Description";
+        [ShowAssetPreview]
+        [SerializeField] private Sprite _sprite;
 
         [Header("Stats")]
         [SerializeField] private int _health = 1;

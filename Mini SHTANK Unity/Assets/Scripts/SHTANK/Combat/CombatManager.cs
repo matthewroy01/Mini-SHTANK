@@ -1,3 +1,5 @@
+using System;
+using SHTANK.GameStates;
 using SHTANK.Grid;
 using UnityEngine;
 
@@ -6,10 +8,22 @@ namespace SHTANK.Combat
     public class CombatManager : MonoBehaviour
     {
         [SerializeField] private GridManager _gridManager;
+        [SerializeField] private Transform _combatCenterTransform;
 
-        public void BeginCombat()
+        public static CombatManager Instance;
+
+        private void Awake()
         {
-            _gridManager.InitializeGridForCombat(new Vector3(5.0f, 0.0f, 5.0f));
+            Instance = this;
+        }
+
+        public void BeginCombat(Vector3 worldPosition)
+        {
+            if (!GameManager.Instance.TryEnterCombatState())
+                return;
+            
+            _gridManager.InitializeGridForCombat(worldPosition);
+            _combatCenterTransform.position = _gridManager.GetCurrentEnemySpaceIntPosition();
         }
 
         public void EndCombat()

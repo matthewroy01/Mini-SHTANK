@@ -16,7 +16,10 @@ namespace SHTANK.Grid
         [Space]
         [Header("Pre-Runtime Data")]
         [ReadOnly] [SerializeField] private List<GridSpaceObject> _gridSpaceObjectList = new();
+
+        private GridSpaceObject _currentEnemySpace;
         
+        [Button("Generate Grid")]
         [ContextMenu("Generate Grid")]
         public void GenerateGrid()
         {
@@ -24,6 +27,7 @@ namespace SHTANK.Grid
             GridHelper.GenerateGrid(_width, _height, _gridSpaceObjectPrefab, _gridSpaceObjectParentTransform, _gridSpaceObjectList);
         }
 
+        [Button("Destroy Grid")]
         [ContextMenu("Destroy Grid")]
         public void DestroyGrid()
         {
@@ -47,12 +51,18 @@ namespace SHTANK.Grid
             }
             
             GridSpaceObject gridSpaceObject = GridHelper.GetClosestGridSpace(worldPosition, _gridSpaceObjectList);
+            _currentEnemySpace = gridSpaceObject;
             GridHelper.SetEnemySpaceAndSurroundingTypes(gridSpaceObject);
         }
 
         public void ClearGridAfterCombat()
         {
             GridHelper.ResetGridSpaceTypes(_gridSpaceObjectList);
+        }
+
+        public Vector3Int GetCurrentEnemySpaceIntPosition()
+        {
+            return _currentEnemySpace.IntWorldPosition;
         }
     }
 }
