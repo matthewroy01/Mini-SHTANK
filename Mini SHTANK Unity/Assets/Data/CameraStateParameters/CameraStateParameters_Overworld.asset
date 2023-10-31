@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: CameraStateParameters_Overworld
   m_EditorClassIdentifier: 
   _positionOffset: {x: 0, y: 2, z: -3}
-  _followSpeed: 0.5
+  _followSpeed: 10
   _pitchAngle: 30
   _rotationSpeed: 10

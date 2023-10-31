@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: CameraStateParameters_Combat
   m_EditorClassIdentifier: 
   _positionOffset: {x: 0, y: 3.5, z: -2.75}
-  _followSpeed: 0.5
+  _followSpeed: 5
   _pitchAngle: 60
-  _rotationSpeed: 0.1
+  _rotationSpeed: 5
