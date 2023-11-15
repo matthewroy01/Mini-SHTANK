@@ -60,9 +60,9 @@ namespace SHTANK.Grid
             GridHelper.ResetGridSpaceTypes(_gridSpaceObjectList);
         }
 
-        public Vector3Int GetCurrentEnemySpaceIntPosition()
+        public GridSpaceObject GetCurrentEnemySpace()
         {
-            return _currentEnemySpace.IntWorldPosition;
+            return _currentEnemySpace;
         }
     }
 }

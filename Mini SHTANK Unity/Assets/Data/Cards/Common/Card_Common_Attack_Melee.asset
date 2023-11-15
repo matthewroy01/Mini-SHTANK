@@ -19,3 +19,13 @@ MonoBehaviour:
     _damageInfo:
       _damage: 1
       _validSourceAreas: 1
+    _changeAreaInfo:
+      _destinationArea: -1
+    _itemInfo:
+      _destinationArea: -1
+    _aggroInfo:
+      _aggro: 0
+    _defendInfo:
+      _damageReductionPercentage: 0
+    _healingInfo:
+      _healing: 0

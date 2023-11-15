@@ -1,4 +1,5 @@
-﻿using SHTANK.Overworld;
+﻿using System;
+using SHTANK.Overworld;
 using UnityEngine;
 using Utility.StateMachine;
 
@@ -7,7 +8,8 @@ namespace SHTANK.GameStates
     public class OverworldState : ManagerState<GameManager>
     {
         [SerializeField] private PlayerMovement _playerMovement;
-        
+        [SerializeField] private EnemyManager _enemyManager;
+
         public override void EnterState()
         {
             
@@ -15,7 +17,8 @@ namespace SHTANK.GameStates
 
         public override void ExitState()
         {
-            
+            _playerMovement.gameObject.SetActive(false);
+            _enemyManager.ToggleEnemies(false);
         }
 
         public override void ProcessState()
