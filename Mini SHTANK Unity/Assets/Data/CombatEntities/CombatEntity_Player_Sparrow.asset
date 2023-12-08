@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _combatEntityType: 1
   _entityName: Sparrow
-  _entityDescription: Leader and one of the founders of SHTANK. He uses special techniques
-    passed down from his family.
-  _sprite: {fileID: 1269988025, guid: 3a2a05e55f0f172418378b49854d6d61, type: 3}
+  _entityDescription: Sparrow hails from the Superhero Agency and loves the theatrics
+    associated with heroism. Her bubbly personality shines as a light for the team
+    but can be overbearing.
+  _sprite: {fileID: -1403844665, guid: 3a2a05e55f0f172418378b49854d6d61, type: 3}
   _health: 1
   _attack: 0
   _defense: 0

@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: CombatEntity_Player_MelonMan
   m_EditorClassIdentifier: 
   _combatEntityType: 1
-  _entityName: Karate Person
-  _entityDescription: Leader and one of the founders of SHTANK. He uses special techniques
-    passed down from his family.
-  _sprite: {fileID: -11825517, guid: 3a2a05e55f0f172418378b49854d6d61, type: 3}
+  _entityName: Melon Man
+  _entityDescription: Stoic and strong, Melon Man is cursed to always have a watermelon
+    on his head. One of the founders of SHTANK.
+  _sprite: {fileID: -849240832, guid: 3a2a05e55f0f172418378b49854d6d61, type: 3}
   _health: 1
   _attack: 0
   _defense: 0

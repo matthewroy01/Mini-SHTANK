@@ -2,17 +2,23 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Pool;
+using Utility;
 using Utility.Pooling;
 
 namespace SHTANK.Grid
 {
-    public class GridManager : MonoBehaviour
+    public class GridManager : Singleton<GridManager>
     {
         //TODO: add some kind of data per "level" that determines the size of the grid
         [SerializeField] private uint _width;
         [SerializeField] private uint _height;
         [SerializeField] private GridSpaceObject _gridSpaceObjectPrefab;
         [SerializeField] private Transform _gridSpaceObjectParentTransform;
+        [Header("Colors")]
+        [SerializeField] private Color _enemySpaceColor;
+        [SerializeField] private Color _battlefieldColor;
+        [SerializeField] private Color _outskirtsColor;
+        [SerializeField] private Color _noMansLandColor;
         [Space]
         [Header("Pre-Runtime Data")]
         [ReadOnly] [SerializeField] private List<GridSpaceObject> _gridSpaceObjectList = new();
@@ -63,6 +69,23 @@ namespace SHTANK.Grid
         public GridSpaceObject GetCurrentEnemySpace()
         {
             return _currentEnemySpace;
+        }
+
+        public Color GetGridSpaceColor(GridSpaceType gridSpaceType)
+        {
+            switch(gridSpaceType)
+            {
+                case GridSpaceType.EnemySpace:
+                    return _enemySpaceColor;
+                case GridSpaceType.Battlefield:
+                    return _battlefieldColor;
+                case GridSpaceType.Outskirts:
+                    return _outskirtsColor;
+                case GridSpaceType.None:
+                case GridSpaceType.NoMansLand:
+                default:
+                    return _noMansLandColor;
+            }
         }
     }
 }

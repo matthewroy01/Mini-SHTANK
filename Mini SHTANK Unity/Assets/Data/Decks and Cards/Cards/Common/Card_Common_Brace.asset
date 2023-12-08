@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b58a14a3974fa454db3cc6d775956c19, type: 3}
+  m_Name: Card_Common_Brace
+  m_EditorClassIdentifier: 
+  _cardName: Brace
+  _cardDescription: Brace for impact to reduce incoming damage.
+  _cardIcon: {fileID: -1695800974, guid: 03014db6a13f59b4c9a4113edf2dac10, type: 3}
+  _cardEffects:
+  - _cardEffectType: 5
+    _damageInfo:
+      _damage: 1
+      _validSourceAreas: 2
+    _changeAreaInfo:
+      _destinationArea: 1
+    _itemInfo:
+      _destinationArea: -1
+    _aggroInfo:
+      _aggro: -1
+    _defendInfo:
+      _damageReductionPercentage: 50
+    _healingInfo:
+      _healing: 0

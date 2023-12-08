@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Pool;
 
 namespace Utility.Pooling
 {
@@ -8,7 +7,7 @@ namespace Utility.Pooling
         protected T Prefab { get; private set; }
         protected Transform Transform { get; private set; }
 
-        public PoolEventContainer(T prefab, Transform transform)
+        protected PoolEventContainer(T prefab, Transform transform)
         {
             Prefab = prefab;
             Transform = transform;

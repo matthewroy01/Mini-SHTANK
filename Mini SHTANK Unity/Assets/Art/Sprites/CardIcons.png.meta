@@ -69,7 +69,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 64
+    maxTextureSize: 256
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -133,8 +133,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: be5f26915b4ec6c4b8f1aa67b91e0c5d
-      internalID: -1412492066
+      spriteID: 5d9556523eefcbe4db2bd40a7ebea965
+      internalID: -1592293076
       vertices: []
       indices: 
       edges: []
@@ -154,8 +154,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4aae1ae93a00e9d49b25e5e0cda179f6
-      internalID: 338208726
+      spriteID: 37b7aa139ea5a1f428e66b79b84d02e1
+      internalID: 677831263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CardIcons_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 237a82a0843e6c0409b5229e8ffb581a
+      internalID: -543634118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CardIcons_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 445b330e6b735764ca4022755264b467
+      internalID: 844903899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CardIcons_4
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2808bd5c44ec6d347889a5e2f3bf7126
+      internalID: -1695800974
       vertices: []
       indices: 
       edges: []
@@ -171,8 +234,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      CardIcons_1: 338208726
-      CardIcons_0: -1412492066
+      CardIcons_4: -1695800974
+      CardIcons_3: 844903899
+      CardIcons_2: -543634118
+      CardIcons_1: 677831263
+      CardIcons_0: -1592293076
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

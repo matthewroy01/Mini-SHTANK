@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using UnityEngine.Pool;
+﻿using UnityEngine.Pool;
 
 namespace Utility.Pooling
 {
