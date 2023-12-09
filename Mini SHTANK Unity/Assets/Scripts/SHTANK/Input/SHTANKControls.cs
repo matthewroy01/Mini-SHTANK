@@ -46,6 +46,24 @@ namespace SHTANK.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Confirm"",
+                    ""type"": ""Button"",
+                    ""id"": ""0668dc43-83e6-41b7-90e4-ad309343555a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""014aff4f-c676-45f8-b49a-f7ea7f65ab16"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -169,6 +187,28 @@ namespace SHTANK.Input
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e5d9ba9-efe2-415c-9cb7-588f6ab316f1"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Confirm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0d25e710-241c-4c03-86b0-e9675031f527"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -179,6 +219,8 @@ namespace SHTANK.Input
             m_Overworld = asset.FindActionMap("Overworld", throwIfNotFound: true);
             m_Overworld_Movement = m_Overworld.FindAction("Movement", throwIfNotFound: true);
             m_Overworld_Jump = m_Overworld.FindAction("Jump", throwIfNotFound: true);
+            m_Overworld_Confirm = m_Overworld.FindAction("Confirm", throwIfNotFound: true);
+            m_Overworld_Cancel = m_Overworld.FindAction("Cancel", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -240,12 +282,16 @@ namespace SHTANK.Input
         private IOverworldActions m_OverworldActionsCallbackInterface;
         private readonly InputAction m_Overworld_Movement;
         private readonly InputAction m_Overworld_Jump;
+        private readonly InputAction m_Overworld_Confirm;
+        private readonly InputAction m_Overworld_Cancel;
         public struct OverworldActions
         {
             private @SHTANKControls m_Wrapper;
             public OverworldActions(@SHTANKControls wrapper) { m_Wrapper = wrapper; }
             public InputAction @Movement => m_Wrapper.m_Overworld_Movement;
             public InputAction @Jump => m_Wrapper.m_Overworld_Jump;
+            public InputAction @Confirm => m_Wrapper.m_Overworld_Confirm;
+            public InputAction @Cancel => m_Wrapper.m_Overworld_Cancel;
             public InputActionMap Get() { return m_Wrapper.m_Overworld; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -261,6 +307,12 @@ namespace SHTANK.Input
                     @Jump.started -= m_Wrapper.m_OverworldActionsCallbackInterface.OnJump;
                     @Jump.performed -= m_Wrapper.m_OverworldActionsCallbackInterface.OnJump;
                     @Jump.canceled -= m_Wrapper.m_OverworldActionsCallbackInterface.OnJump;
+                    @Confirm.started -= m_Wrapper.m_OverworldActionsCallbackInterface.OnConfirm;
+                    @Confirm.performed -= m_Wrapper.m_OverworldActionsCallbackInterface.OnConfirm;
+                    @Confirm.canceled -= m_Wrapper.m_OverworldActionsCallbackInterface.OnConfirm;
+                    @Cancel.started -= m_Wrapper.m_OverworldActionsCallbackInterface.OnCancel;
+                    @Cancel.performed -= m_Wrapper.m_OverworldActionsCallbackInterface.OnCancel;
+                    @Cancel.canceled -= m_Wrapper.m_OverworldActionsCallbackInterface.OnCancel;
                 }
                 m_Wrapper.m_OverworldActionsCallbackInterface = instance;
                 if (instance != null)
@@ -271,6 +323,12 @@ namespace SHTANK.Input
                     @Jump.started += instance.OnJump;
                     @Jump.performed += instance.OnJump;
                     @Jump.canceled += instance.OnJump;
+                    @Confirm.started += instance.OnConfirm;
+                    @Confirm.performed += instance.OnConfirm;
+                    @Confirm.canceled += instance.OnConfirm;
+                    @Cancel.started += instance.OnCancel;
+                    @Cancel.performed += instance.OnCancel;
+                    @Cancel.canceled += instance.OnCancel;
                 }
             }
         }
@@ -279,6 +337,8 @@ namespace SHTANK.Input
         {
             void OnMovement(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
+            void OnConfirm(InputAction.CallbackContext context);
+            void OnCancel(InputAction.CallbackContext context);
         }
     }
 }

@@ -751,3 +751,5 @@ MonoBehaviour:
   _artContainer: {fileID: 2611822379460817577}
   _deckRotationMinMax: {x: -15, y: 15}
   _deckPositionAmplitude: 20
+  _selectedOffset: 50
+  _previewRotationMinMax: {x: -10, y: 10}

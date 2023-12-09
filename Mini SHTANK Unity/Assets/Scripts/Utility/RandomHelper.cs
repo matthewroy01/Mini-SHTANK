@@ -28,5 +28,20 @@ namespace Utility
 
             return result;
         }
+
+        public static float GetRandomFloat(Vector2 minMax)
+        {
+            return Random.Range(minMax.x, minMax.y);
+        }
+        
+        public static int GetRandomIntInclusive(Vector2Int minMax)
+        {
+            return Random.Range(minMax.x, minMax.y + 1);
+        }
+
+        public static int GetRandomIntExclusive(Vector2Int minMax)
+        {
+            return Random.Range(minMax.x, minMax.y);
+        }
     }
 }

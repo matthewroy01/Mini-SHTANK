@@ -32,7 +32,7 @@ namespace SHTANK.GameStates
 
         public override void ProcessState()
         {
-            
+            _cardManager.InteractWithCards();
         }
 
         public override void ProcessStateFixed()
