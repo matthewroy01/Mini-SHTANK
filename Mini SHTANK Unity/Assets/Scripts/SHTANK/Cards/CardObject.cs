@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using NaughtyAttributes;
@@ -13,9 +14,11 @@ namespace SHTANK.Cards
     {
         public RectTransform ArtContainer => _artContainer;
         public CardDefinition CardDefinition => _cardDefinition;
+        public CardContainer CardContainer => _cardContainer;
         
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private Image _image;
+        [SerializeField] private CanvasGroup _canvasGroup;
         [Header("Deck Visuals")]
         [SerializeField] private RectTransform _artContainer;
         [MinMaxSlider(-90.0f, 90.0f)]
@@ -29,6 +32,8 @@ namespace SHTANK.Cards
         private List<CardEffectInfo> _cardEffectList = new();
         private float _yOffset;
         private Tween _selectionTween;
+        private CardContainer _cardContainer;
+        private Tween _grayOutTween;
 
         public void Initialize(CardDefinition cardDefinition)
         {
@@ -68,6 +73,11 @@ namespace SHTANK.Cards
             _artContainer.eulerAngles = new Vector3(0.0f, 0.0f, randomZ);
         }
 
+        public void SetContainer(CardContainer cardContainer)
+        {
+            _cardContainer = cardContainer;
+        }
+
         public void Select()
         {
             _selectionTween?.Kill();
@@ -78,6 +88,20 @@ namespace SHTANK.Cards
         {
             _selectionTween?.Kill();
             _selectionTween = _artContainer.DOAnchorPosY(_yOffset, 0.25f);
+        }
+
+        public void RestoreColor()
+        {
+            _grayOutTween?.Kill();
+
+            _grayOutTween = _canvasGroup.DOFade(1.0f, 0.25f);
+        }
+        
+        public void GrayOut()
+        {
+            _grayOutTween?.Kill();
+
+            _grayOutTween = _canvasGroup.DOFade(0.5f, 0.25f);
         }
     }
 }

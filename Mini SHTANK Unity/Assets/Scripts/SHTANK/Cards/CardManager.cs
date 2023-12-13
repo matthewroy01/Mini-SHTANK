@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
+using JetBrains.Annotations;
 using SHTANK.Data.Cards;
 using SHTANK.Input;
 using SHTANK.UI;
@@ -13,6 +15,8 @@ namespace SHTANK.Cards
 {
     public class CardManager : Singleton<CardManager>
     {
+        public event Action ConfirmedPlayedCards;
+        
         [Header("Prefabs")]
         [SerializeField] private CardObject _cardObjectPrefab;
         [SerializeField] private HandObject _handObjectPrefab;
@@ -20,6 +24,7 @@ namespace SHTANK.Cards
         [SerializeField] private Transform _handsParent;
         [Header("References")]
         [SerializeField] private CardPreview _cardPreview;
+        [SerializeField] private CanvasGroup _goButtonCanvasGroup;
         [Header("Testing")]
         [SerializeField] private List<CardDefinition> _testCards = new();
         private ObjectPool<CardObject> _cardObjectPool;
@@ -35,6 +40,8 @@ namespace SHTANK.Cards
         private int _highestSiblingIndex;
         private int _highestIndex;
         private int _siblingIndex;
+        private readonly Stack<CardObject> _queuedCardObjectStack = new();
+        private Tween _goButtonCanvasGroupFadeTween;
 
         protected override void Awake()
         {
@@ -56,9 +63,9 @@ namespace SHTANK.Cards
 
             for (int i = 0; i < numberOfHands; ++i)
             {
-                HandObject handObject = _handObjectPool.Get();
+                HandObject handObject = i < _activeHands.Count ? _activeHands[i] : _handObjectPool.Get();
 
-                for (int j = 0; j < numberOfCardsPerHand; ++j)
+                for (int j = handObject.CardObjectList.Count; j < numberOfCardsPerHand; ++j)
                 {
                     // TODO: pull cards from a deck...
                     CardDefinition cardDefinition = RandomHelper.GetRandomItem(_testCards);
@@ -69,14 +76,16 @@ namespace SHTANK.Cards
                     handObject.TryAddCard(cardObject);
                 }
                 
-                _activeHands.Add(handObject);
+                if (!_activeHands.Contains(handObject))
+                    _activeHands.Add(handObject);
             }
         }
 
         public void InteractWithCards()
         {
             MouseOverCards();
-            ClickCards();
+            CancelCards();
+            ConfirmCards();
         }
 
         // TODO: move this function and anything related to card "input" to a separate class
@@ -96,6 +105,9 @@ namespace SHTANK.Cards
             {
                 foreach (HandObject handObject in _activeHands)
                 {
+                    if (!handObject.CardsEnabled)
+                        continue;
+                    
                     foreach (CardObject cardObject in handObject.CardObjectList)
                     {
                         if (!RectTransformUtility.RectangleContainsScreenPoint(cardObject.ArtContainer, _screenSpaceMousePosition))
@@ -149,15 +161,79 @@ namespace SHTANK.Cards
             }
         }
 
-        private void ClickCards()
+        private void ConfirmCards()
         {
+            if (_queuedCardObjectStack.Count >= _activeHands.Count)
+                return;
+            
             if (_selectedCard == null)
                 return;
 
             if (!InputManager.Instance.Confirm)
                 return;
             
+            ((HandObject)_selectedCard.CardContainer).PlayCard(_selectedCard);
+            
+            _queuedCardObjectStack.Push(_selectedCard);
             _cardPreview.AddCard(_selectedCard.CardDefinition);
+            
+            UpdateVisualsBasedOnCardCount();
+        }
+
+        private void CancelCards()
+        {
+            if (_queuedCardObjectStack.Count == 0)
+                return;
+            
+            if (!InputManager.Instance.Cancel)
+                return;
+            
+            CardObject cardObject = _queuedCardObjectStack.Pop();
+            _cardPreview.RemoveCard();
+            
+            ((HandObject)cardObject.CardContainer).CancelPlayedCard();
+            
+            UpdateVisualsBasedOnCardCount();
+        }
+
+        private void UpdateVisualsBasedOnCardCount()
+        {
+            _goButtonCanvasGroupFadeTween?.Kill();
+
+            if (_queuedCardObjectStack.Count >= _activeHands.Count)
+            {
+                _goButtonCanvasGroupFadeTween = _goButtonCanvasGroup.DOFade(1.0f, 0.25f).OnComplete(delegate
+                {
+                    _SetGoButtonCanvasGroupInteractable(true);
+                });
+            }
+            else
+            {
+                _SetGoButtonCanvasGroupInteractable(false);
+                _goButtonCanvasGroupFadeTween = _goButtonCanvasGroup.DOFade(0.0f, 0.25f);
+            }
+
+            void _SetGoButtonCanvasGroupInteractable(bool value)
+            {
+                _goButtonCanvasGroup.interactable = value;
+                _goButtonCanvasGroup.blocksRaycasts = value;
+            }
+        }
+
+        public void ConfirmPlayedCards()
+        {
+            foreach (HandObject handObject in _activeHands)
+            {
+                CardObject cardObject = handObject.RemovePlayedCard();
+                _cardObjectPool.Release(cardObject);
+            }
+            
+            _queuedCardObjectStack.Clear();
+            UpdateVisualsBasedOnCardCount();
+            
+            _cardPreview.RemoveAllCards();
+            
+            ConfirmedPlayedCards?.Invoke();
         }
     }
 }

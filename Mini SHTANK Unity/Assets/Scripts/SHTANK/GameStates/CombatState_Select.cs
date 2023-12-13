@@ -1,4 +1,5 @@
-﻿using SHTANK.Cards;
+﻿using System;
+using SHTANK.Cards;
 using SHTANK.Grid;
 using SHTANK.Input;
 using UnityEngine;
@@ -8,6 +9,8 @@ namespace SHTANK.GameStates
 {
     public class CombatState_Select : ManagerState<GameManager>
     {
+        public event Action DoneSelecting;
+        
         [SerializeField] private CardManager _cardManager;
         [Space]
         [SerializeField] private LayerMask _gridSpaceLayerMask;
@@ -18,7 +21,22 @@ namespace SHTANK.GameStates
         private GridSpaceObject _currentGridSpaceObject;
         
         // TODO: enable hands of cards and movement selection
-        
+
+        private void OnEnable()
+        {
+            _cardManager.ConfirmedPlayedCards += CardManager_OnConfirmedPlayedCards;
+        }
+
+        private void OnDisable()
+        {
+            _cardManager.ConfirmedPlayedCards -= CardManager_OnConfirmedPlayedCards;
+        }
+
+        private void CardManager_OnConfirmedPlayedCards()
+        {
+            DoneSelecting?.Invoke();
+        }
+
         public override void EnterState()
         {
             Manager.UpdateInstructionPopup(_instructionText);

@@ -15,6 +15,8 @@ namespace SHTANK.GameStates
         [SerializeField] private OverworldState _overworldState;
         [SerializeField] private CombatState_Start _combatStateStart;
         [SerializeField] private CombatState_Select _combatStateSelect;
+        [SerializeField] private CombatState_ProcessAbilities _combatStateProcessAbilities;
+        [SerializeField] private CombatState_EnemyTurn _combatStateEnemyTurn;
         [Space]
         [SerializeField] private InstructionPopup _instructionPopup;
         
@@ -23,14 +25,35 @@ namespace SHTANK.GameStates
         private void OnEnable()
         {
             _combatStateStart.DoneWithAnimation += CombatStateStart_OnDoneWithAnimation;
+            _combatStateSelect.DoneSelecting += CombatStateSelect_OnDoneSelecting;
+            _combatStateProcessAbilities.DoneProcessingAbilities += CombatStateProcessAbilities_OnDoneProcessingAbilities;
+            _combatStateEnemyTurn.DoneWithEnemyTurn += CombatStateEnemyTurn_OnDoneWithEnemyTurn;
         }
 
         private void OnDisable()
         {
             _combatStateStart.DoneWithAnimation -= CombatStateStart_OnDoneWithAnimation;
+            _combatStateSelect.DoneSelecting -= CombatStateSelect_OnDoneSelecting;
+            _combatStateProcessAbilities.DoneProcessingAbilities -= CombatStateProcessAbilities_OnDoneProcessingAbilities;
+            _combatStateEnemyTurn.DoneWithEnemyTurn -= CombatStateEnemyTurn_OnDoneWithEnemyTurn;
         }
 
         private void CombatStateStart_OnDoneWithAnimation()
+        {
+            _stateMachine.TryChangeState(_combatStateSelect);
+        }
+
+        private void CombatStateSelect_OnDoneSelecting()
+        {
+            _stateMachine.TryChangeState(_combatStateProcessAbilities);
+        }
+
+        private void CombatStateProcessAbilities_OnDoneProcessingAbilities()
+        {
+            _stateMachine.TryChangeState(_combatStateEnemyTurn);
+        }
+
+        private void CombatStateEnemyTurn_OnDoneWithEnemyTurn()
         {
             _stateMachine.TryChangeState(_combatStateSelect);
         }
@@ -47,10 +70,15 @@ namespace SHTANK.GameStates
             _overworldState.SetManager(this);
             _combatStateStart.SetManager(this);
             _combatStateSelect.SetManager(this);
+            _combatStateProcessAbilities.SetManager(this);
+            _combatStateEnemyTurn.SetManager(this);
 
             _stateMachine = new StateMachine(_overworldState,
                 new Connection(_overworldState, _combatStateStart),
-                new Connection(_combatStateStart, _combatStateSelect));
+                new Connection(_combatStateStart, _combatStateSelect),
+                new Connection(_combatStateSelect, _combatStateProcessAbilities),
+                new Connection(_combatStateProcessAbilities, _combatStateEnemyTurn),
+                new Connection(_combatStateEnemyTurn, _combatStateSelect));
         }
 
         private void Update()

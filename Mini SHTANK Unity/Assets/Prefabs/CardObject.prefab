@@ -668,6 +668,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2611822379460817577}
+  - component: {fileID: 4352898330934976062}
   m_Layer: 0
   m_Name: ArtContainer
   m_TagString: Untagged
@@ -696,6 +697,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &4352898330934976062
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2611822379460817578}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &2611822380298212895
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,6 +761,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _text: {fileID: 387792644609363584}
   _image: {fileID: 387792645756574848}
+  _canvasGroup: {fileID: 4352898330934976062}
   _artContainer: {fileID: 2611822379460817577}
   _deckRotationMinMax: {x: -15, y: 15}
   _deckPositionAmplitude: 20

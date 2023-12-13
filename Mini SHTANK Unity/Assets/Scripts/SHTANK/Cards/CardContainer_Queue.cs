@@ -15,6 +15,7 @@ namespace SHTANK.Cards
                 return;
             
             _cardObjectQueue.Enqueue(cardObject);
+            cardObject.SetContainer(this);
         }
 
         public CardObject TryRemoveCard()

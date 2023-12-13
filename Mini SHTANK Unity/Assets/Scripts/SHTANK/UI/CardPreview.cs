@@ -39,5 +39,13 @@ namespace SHTANK.UI
             
             _cardPreviewTextBoxPool.Release(_activeCardPreviewTextBoxStack.Pop());
         }
+
+        public void RemoveAllCards()
+        {
+            while (_activeCardPreviewTextBoxStack.Count > 0)
+            {
+                RemoveCard();
+            }
+        }
     }
 }

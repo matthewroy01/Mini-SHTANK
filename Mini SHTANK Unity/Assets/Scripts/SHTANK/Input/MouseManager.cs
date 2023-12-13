@@ -1,8 +1,6 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utility;
-using Object = System.Object;
 
 namespace SHTANK.Input
 {

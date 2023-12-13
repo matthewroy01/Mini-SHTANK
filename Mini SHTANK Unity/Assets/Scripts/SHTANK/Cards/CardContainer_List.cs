@@ -15,11 +15,15 @@ namespace SHTANK.Cards
                 return;
             
             _cardObjectList.Add(cardObject);
+            cardObject.SetContainer(this);
             SetParent(cardObject);
         }
 
         public CardObject TryRemoveCard(CardObject cardObject)
         {
+            if (cardObject == null)
+                return null;
+            
             if (!_cardObjectList.Contains(cardObject))
                 return null;
             
