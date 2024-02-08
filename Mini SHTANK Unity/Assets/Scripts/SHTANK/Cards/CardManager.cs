@@ -71,9 +71,13 @@ namespace SHTANK.Cards
                     CardDefinition cardDefinition = RandomHelper.GetRandomItem(_testCards);
                     CardObject cardObject = _cardObjectPool.Get();
                     cardObject.Initialize(cardDefinition);
-                    cardObject.ApplyOffset(j, numberOfCardsPerHand);
                     
                     handObject.TryAddCard(cardObject);
+                }
+
+                for (int j = 0; j < handObject.CardObjectList.Count; ++j)
+                {
+                    handObject.CardObjectList[j].ApplyOffset(j, numberOfCardsPerHand);
                 }
                 
                 if (!_activeHands.Contains(handObject))

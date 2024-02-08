@@ -38,6 +38,8 @@ namespace SHTANK.Cards
         public void Initialize(CardDefinition cardDefinition)
         {
             _cardDefinition = cardDefinition;
+
+            gameObject.name = "CardObject " + cardDefinition.CardName;
             
             _text.text = _cardDefinition.CardName;
             _image.sprite = _cardDefinition.CardIcon;

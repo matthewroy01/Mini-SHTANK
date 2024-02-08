@@ -14,6 +14,7 @@ namespace SHTANK.Cards
 
         public override void OnGet(CardObject toGet)
         {
+            toGet.transform.SetSiblingIndex(int.MaxValue);
             toGet.gameObject.SetActive(true);
         }
 
