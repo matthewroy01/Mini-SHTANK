@@ -1,11 +1,20 @@
+using SHTANK.Combat;
+
 namespace SHTANK.Cards
 {
     public class HandObject : CardContainer_List
     {
+        public CombatEntity AssociatedCombatEntity => _associatedCombatEntity;
         public bool CardsEnabled => _cardsEnabled;
-        
+
+        private CombatEntity _associatedCombatEntity;
         private CardObject _playedCard;
         private bool _cardsEnabled = true;
+
+        public void Initialize(CombatEntity associatedCombatEntity)
+        {
+            _associatedCombatEntity = associatedCombatEntity;
+        }
 
         public void PlayCard(CardObject cardObject)
         {

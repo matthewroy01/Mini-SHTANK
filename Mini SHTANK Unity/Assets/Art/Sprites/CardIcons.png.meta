@@ -223,6 +223,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: CardIcons_5
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 957cb4c55234fac43b70e8e9edd35795
+      internalID: -2120570711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -239,6 +260,7 @@ TextureImporter:
       CardIcons_2: -543634118
       CardIcons_1: 677831263
       CardIcons_0: -1592293076
+      CardIcons_5: -2120570711
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

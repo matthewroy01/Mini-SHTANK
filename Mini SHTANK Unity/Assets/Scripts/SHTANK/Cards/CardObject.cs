@@ -45,7 +45,7 @@ namespace SHTANK.Cards
             _image.sprite = _cardDefinition.CardIcon;
             
             _cardEffectList.Clear();
-            _cardEffectList = _cardDefinition.CardEffects;
+            _cardEffectList.AddRange(_cardDefinition.CardEffects);
         }
 
         public void ApplyOffset(int cardID, int numberOfCards)

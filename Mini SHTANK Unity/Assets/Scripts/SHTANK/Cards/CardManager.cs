@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using JetBrains.Annotations;
+using SHTANK.Combat;
 using SHTANK.Data.Cards;
 using SHTANK.Input;
 using SHTANK.UI;
@@ -16,6 +17,8 @@ namespace SHTANK.Cards
     public class CardManager : Singleton<CardManager>
     {
         public event Action ConfirmedPlayedCards;
+
+        public Stack<QueuedCardInfo> QueuedCardInfoStack => _queuedCardInfoStack;
         
         [Header("Prefabs")]
         [SerializeField] private CardObject _cardObjectPrefab;
@@ -40,7 +43,7 @@ namespace SHTANK.Cards
         private int _highestSiblingIndex;
         private int _highestIndex;
         private int _siblingIndex;
-        private readonly Stack<CardObject> _queuedCardObjectStack = new();
+        private readonly Stack<QueuedCardInfo> _queuedCardInfoStack = new();
         private Tween _goButtonCanvasGroupFadeTween;
 
         protected override void Awake()
@@ -60,10 +63,22 @@ namespace SHTANK.Cards
         public void DrawCards()
         {
             const int numberOfHands = 3, numberOfCardsPerHand = 4;
+            
+            _queuedCardInfoStack.Clear();
 
             for (int i = 0; i < numberOfHands; ++i)
             {
-                HandObject handObject = i < _activeHands.Count ? _activeHands[i] : _handObjectPool.Get();
+                HandObject handObject;
+                
+                if (i < _activeHands.Count)
+                {
+                    handObject = _activeHands[i];
+                }
+                else
+                {
+                    handObject = _handObjectPool.Get();
+                    handObject.Initialize(CombatManager.Instance.StoredPlayers[i]);
+                }
 
                 for (int j = handObject.CardObjectList.Count; j < numberOfCardsPerHand; ++j)
                 {
@@ -167,7 +182,7 @@ namespace SHTANK.Cards
 
         private void ConfirmCards()
         {
-            if (_queuedCardObjectStack.Count >= _activeHands.Count)
+            if (_queuedCardInfoStack.Count >= _activeHands.Count)
                 return;
             
             if (_selectedCard == null)
@@ -175,27 +190,29 @@ namespace SHTANK.Cards
 
             if (!InputManager.Instance.Confirm)
                 return;
-            
-            ((HandObject)_selectedCard.CardContainer).PlayCard(_selectedCard);
-            
-            _queuedCardObjectStack.Push(_selectedCard);
-            _cardPreview.AddCard(_selectedCard.CardDefinition);
+
+            HandObject handObject = (HandObject)_selectedCard.CardContainer;
+            handObject.PlayCard(_selectedCard);
+
+            QueuedCardInfo queuedCardInfo = new QueuedCardInfo(_selectedCard, handObject.AssociatedCombatEntity);
+            _queuedCardInfoStack.Push(queuedCardInfo);
+            _cardPreview.AddCard(queuedCardInfo);
             
             UpdateVisualsBasedOnCardCount();
         }
 
         private void CancelCards()
         {
-            if (_queuedCardObjectStack.Count == 0)
+            if (_queuedCardInfoStack.Count == 0)
                 return;
             
             if (!InputManager.Instance.Cancel)
                 return;
             
-            CardObject cardObject = _queuedCardObjectStack.Pop();
+            QueuedCardInfo queuedCardInfo = _queuedCardInfoStack.Pop();
             _cardPreview.RemoveCard();
             
-            ((HandObject)cardObject.CardContainer).CancelPlayedCard();
+            ((HandObject)queuedCardInfo.CardObject.CardContainer).CancelPlayedCard();
             
             UpdateVisualsBasedOnCardCount();
         }
@@ -204,7 +221,7 @@ namespace SHTANK.Cards
         {
             _goButtonCanvasGroupFadeTween?.Kill();
 
-            if (_queuedCardObjectStack.Count >= _activeHands.Count)
+            if (_queuedCardInfoStack.Count >= _activeHands.Count)
             {
                 _goButtonCanvasGroupFadeTween = _goButtonCanvasGroup.DOFade(1.0f, 0.25f).OnComplete(delegate
                 {
@@ -231,13 +248,12 @@ namespace SHTANK.Cards
                 CardObject cardObject = handObject.RemovePlayedCard();
                 _cardObjectPool.Release(cardObject);
             }
+                        
+            ConfirmedPlayedCards?.Invoke();
             
-            _queuedCardObjectStack.Clear();
             UpdateVisualsBasedOnCardCount();
             
             _cardPreview.RemoveAllCards();
-            
-            ConfirmedPlayedCards?.Invoke();
         }
     }
 }

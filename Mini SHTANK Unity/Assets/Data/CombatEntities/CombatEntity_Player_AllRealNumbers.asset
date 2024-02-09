@@ -16,7 +16,7 @@ MonoBehaviour:
   _entityName: All Real Numbers
   _entityDescription: An arrogant, former math teacher, All Real Numbers harnesses
     the power of real numbers and hurls them at his foes.
-  _sprite: {fileID: 0}
+  _sprite: {fileID: 2121322415, guid: 3a2a05e55f0f172418378b49854d6d61, type: 3}
   _health: 1
   _attack: 0
   _defense: 0

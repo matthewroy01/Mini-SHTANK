@@ -10,6 +10,10 @@ namespace SHTANK.Combat
 {
     public class CombatManager : Singleton<CombatManager>
     {
+        public CombatEntity StoredEnemy => _storedEnemy;
+        public List<CombatEntity> StoredPlayers => _storedPlayers;
+        public float CurrentDamageMultiplier => _currentDamageMultiplier;
+        
         [SerializeField] private GridManager _gridManager;
         [SerializeField] private Transform _combatCenterTransform;
         [SerializeField] private CombatEntity _combatEntityPrefab;
@@ -20,8 +24,9 @@ namespace SHTANK.Combat
         private CombatEntityPoolEventContainer _combatEntityPoolEventContainer;
         private CombatEntity _tempCombatEntity;
         private Vector3 _spawnPosition;
-        private CombatEntity _enemyStored;
-        private readonly List<CombatEntity> _playersStored = new();
+        private CombatEntity _storedEnemy;
+        private readonly List<CombatEntity> _storedPlayers = new();
+        private float _currentDamageMultiplier = 1.0f;
 
         protected override void Awake()
         {
@@ -55,32 +60,32 @@ namespace SHTANK.Combat
             _tempCombatEntity = _combatEntityPool.Get();
             _tempCombatEntity.Initialize(enemyCombatEntityDefinition);
 
-            _enemyStored = _tempCombatEntity;
+            _storedEnemy = _tempCombatEntity;
         }
 
         private void CreatePlayerCombatEntities()
         {
-            _playersStored.Clear();
+            _storedPlayers.Clear();
             
             foreach (CombatEntityDefinition combatEntityDefinition in _playersToSpawn)
             {
                 _tempCombatEntity = _combatEntityPool.Get();
                 _tempCombatEntity.Initialize(combatEntityDefinition);
                 
-                _playersStored.Add(_tempCombatEntity);
+                _storedPlayers.Add(_tempCombatEntity);
             }
         }
 
         private void PositionEnemyCombatEntity(GridSpaceObject enemyGridSpaceObject)
         {
-            _enemyStored.transform.position = enemyGridSpaceObject.transform.position;
+            _storedEnemy.transform.position = enemyGridSpaceObject.transform.position;
         }
 
         private void PositionPlayerCombatEntities(GridSpaceObject enemyGridSpaceObject)
         {
             GridConnections gridConnections = enemyGridSpaceObject.GridConnections;
             
-            for (int i = 0; i < _playersStored.Count; ++i)
+            for (int i = 0; i < _storedPlayers.Count; ++i)
             {
                 switch (i)
                 {
@@ -112,7 +117,7 @@ namespace SHTANK.Combat
                         return;
                 }
 
-                _playersStored[i].transform.position = _spawnPosition;
+                _storedPlayers[i].transform.position = _spawnPosition;
             }
         }
 

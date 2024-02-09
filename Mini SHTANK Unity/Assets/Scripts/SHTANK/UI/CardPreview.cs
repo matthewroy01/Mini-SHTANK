@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SHTANK.Cards;
 using SHTANK.Data.Cards;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -24,10 +25,10 @@ namespace SHTANK.UI
             _cardPreviewTextBoxPool = PoolHelper<CardPreviewTextBox>.CreatePool(_cardPreviewTextBoxPoolEventContainer);
         }
 
-        public void AddCard(CardDefinition cardDefinition)
+        public void AddCard(QueuedCardInfo queuedCardInfo)
         {
             CardPreviewTextBox cardPreviewTextBox = _cardPreviewTextBoxPool.Get();
-            cardPreviewTextBox.Initialize(_activeCardPreviewTextBoxStack.Count == 0 ? _firstMessage : _subsequentMessage, cardDefinition);
+            cardPreviewTextBox.Initialize(_activeCardPreviewTextBoxStack.Count == 0 ? _firstMessage : _subsequentMessage, queuedCardInfo.CardObject.CardDefinition);
             
             _activeCardPreviewTextBoxStack.Push(cardPreviewTextBox);
         }
