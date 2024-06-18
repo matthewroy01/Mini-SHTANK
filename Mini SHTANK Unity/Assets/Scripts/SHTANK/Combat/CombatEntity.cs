@@ -13,6 +13,7 @@ namespace SHTANK.Combat
         public event Action ReachedZeroHealth;
 
         public CombatEntityDefinition CombatEntityDefinition => _combatEntityDefinition;
+        public int CurrentHealth => _currentHealth;
         
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] [ReadOnly] private int _currentHealth;

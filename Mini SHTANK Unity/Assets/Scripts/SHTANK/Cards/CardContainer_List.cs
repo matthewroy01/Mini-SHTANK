@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SHTANK.Data.Cards;
 
 namespace SHTANK.Cards
 {
@@ -29,6 +28,15 @@ namespace SHTANK.Cards
             
             _cardObjectList.Remove(cardObject);
             return cardObject;
+        }
+
+        public List<CardObject> RemoveAllCards()
+        {
+            List<CardObject> removedCards = new (_cardObjectList);
+
+            _cardObjectList.Clear();
+
+            return removedCards;
         }
     }
 }

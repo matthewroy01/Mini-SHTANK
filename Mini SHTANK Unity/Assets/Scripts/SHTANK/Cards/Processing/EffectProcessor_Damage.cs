@@ -8,19 +8,23 @@ namespace SHTANK.Cards.Processing
     {
         private readonly CardEffect_Damage _damageInfo;
         private readonly CombatEntity _sourceCombatEntity;
+        private readonly CombatEntity[] _targetCombatEntityArray;
         
-        public EffectProcessor_Damage(CardEffect_Damage damageInfo, CombatEntity sourceCombatEntity)
+        public EffectProcessor_Damage(CardEffect_Damage damageInfo, CombatEntity sourceCombatEntity, params CombatEntity[] targetCombatEntityArray)
         {
             _damageInfo = damageInfo;
             _sourceCombatEntity = sourceCombatEntity;
+            _targetCombatEntityArray = targetCombatEntityArray;
         }
         
         public override IEnumerator Process()
         {
-            CombatEntity enemy = CombatManager.Instance.StoredEnemy;
-            int damage = CombatHelper.CalculateDamage(_damageInfo, _sourceCombatEntity, enemy);
+            foreach (CombatEntity combatEntity in _targetCombatEntityArray)
+            {
+                int damage = CombatHelper.CalculateDamage(_damageInfo, _sourceCombatEntity, combatEntity);
             
-            enemy.AdjustHealthByAmount(-damage);
+                combatEntity.AdjustHealthByAmount(-damage);   
+            }
 
             yield return null;
         }

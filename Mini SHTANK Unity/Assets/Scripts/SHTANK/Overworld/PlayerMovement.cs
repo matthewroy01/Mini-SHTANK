@@ -85,5 +85,10 @@ namespace SHTANK.Overworld
         {
             return _groundChecker.Grounded ? _acceleration : _acceleration * _airborneAccelerationMultiplier;
         }
+
+        public void StopVelocity()
+        {
+            _rigidbody.velocity = Vector3.zero;
+        }
     }
 }

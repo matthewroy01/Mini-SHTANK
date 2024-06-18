@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using SHTANK.Data.CombatEntities;
 using SHTANK.GameStates;
 using SHTANK.Grid;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.UI;
 using Utility;
 
 namespace SHTANK.Combat
@@ -49,12 +51,13 @@ namespace SHTANK.Combat
             _combatCenterTransform.position = enemyGridSpaceObject.IntWorldPosition;
 
             CreateEnemyCombatEntity(enemyCombatEntityDefinition);
+            
             CreatePlayerCombatEntities();
 
             PositionEnemyCombatEntity(enemyGridSpaceObject);
             PositionPlayerCombatEntities(enemyGridSpaceObject);
         }
-        
+
         private void CreateEnemyCombatEntity(CombatEntityDefinition enemyCombatEntityDefinition)
         {
             _tempCombatEntity = _combatEntityPool.Get();
@@ -121,9 +124,26 @@ namespace SHTANK.Combat
             }
         }
 
+        public bool GetEnemyHealthIsZero()
+        {
+            return _storedEnemy.CurrentHealth <= 0;
+        }
+
         public void EndCombat()
         {
             _gridManager.ClearGridAfterCombat();
+
+            ClearCombatEntities();
+        }
+
+        private void ClearCombatEntities()
+        {
+            foreach (CombatEntity combatEntity in _storedPlayers)
+            {
+                _combatEntityPool.Release(combatEntity);
+            }
+
+            _combatEntityPool.Release(_storedEnemy);
         }
     }
 }

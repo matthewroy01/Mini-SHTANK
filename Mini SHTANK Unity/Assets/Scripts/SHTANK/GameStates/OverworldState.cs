@@ -12,12 +12,13 @@ namespace SHTANK.GameStates
 
         public override void EnterState()
         {
-            
+            _playerMovement.gameObject.SetActive(true);
         }
 
         public override void ExitState()
         {
             _playerMovement.gameObject.SetActive(false);
+            _playerMovement.StopVelocity();
             _enemyManager.ToggleEnemies(false);
         }
 

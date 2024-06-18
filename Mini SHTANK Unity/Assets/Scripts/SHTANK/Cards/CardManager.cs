@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 using SHTANK.Combat;
 using SHTANK.Data.Cards;
 using SHTANK.Input;
+using SHTANK.Overworld;
 using SHTANK.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -45,6 +46,9 @@ namespace SHTANK.Cards
         private int _siblingIndex;
         private readonly Stack<QueuedCardInfo> _queuedCardInfoStack = new();
         private Tween _goButtonCanvasGroupFadeTween;
+        private CombatManager _combatManager;
+
+        private const int _numberOfHands = 3, _numberOfCardsPerHand = 4;
 
         protected override void Awake()
         {
@@ -58,15 +62,15 @@ namespace SHTANK.Cards
 
             _deckObjectPoolEventContainer = new DeckObjectPoolEventContainer(_deckObjectPrefab, _handsParent);
             _deckObjectPool = PoolHelper<DeckObject>.CreatePool(_deckObjectPoolEventContainer);
+
+            _combatManager = CombatManager.Instance;
         }
         
         public void DrawCards()
         {
-            const int numberOfHands = 3, numberOfCardsPerHand = 4;
-            
             _queuedCardInfoStack.Clear();
 
-            for (int i = 0; i < numberOfHands; ++i)
+            for (int i = 0; i < _numberOfHands; ++i)
             {
                 HandObject handObject;
                 
@@ -80,7 +84,7 @@ namespace SHTANK.Cards
                     handObject.Initialize(CombatManager.Instance.StoredPlayers[i]);
                 }
 
-                for (int j = handObject.CardObjectList.Count; j < numberOfCardsPerHand; ++j)
+                for (int j = handObject.CardObjectList.Count; j < _numberOfCardsPerHand; ++j)
                 {
                     // TODO: pull cards from a deck...
                     CardDefinition cardDefinition = RandomHelper.GetRandomItem(_testCards);
@@ -92,11 +96,24 @@ namespace SHTANK.Cards
 
                 for (int j = 0; j < handObject.CardObjectList.Count; ++j)
                 {
-                    handObject.CardObjectList[j].ApplyOffset(j, numberOfCardsPerHand);
+                    handObject.CardObjectList[j].ApplyOffset(j, _numberOfCardsPerHand);
                 }
                 
                 if (!_activeHands.Contains(handObject))
                     _activeHands.Add(handObject);
+            }
+        }
+
+        public void ReturnCardsToDeck()
+        {
+            foreach (HandObject handObject in _activeHands)
+            {
+                List<CardObject> removedCards = handObject.RemoveAllCards();
+
+                foreach (CardObject cardObject in removedCards)
+                {
+                    _cardObjectPool.Release(cardObject);
+                }
             }
         }
 
@@ -194,7 +211,7 @@ namespace SHTANK.Cards
             HandObject handObject = (HandObject)_selectedCard.CardContainer;
             handObject.PlayCard(_selectedCard);
 
-            QueuedCardInfo queuedCardInfo = new QueuedCardInfo(_selectedCard, handObject.AssociatedCombatEntity);
+            QueuedCardInfo queuedCardInfo = new QueuedCardInfo(_selectedCard, handObject.AssociatedCombatEntity, _combatManager.StoredEnemy);
             _queuedCardInfoStack.Push(queuedCardInfo);
             _cardPreview.AddCard(queuedCardInfo);
             

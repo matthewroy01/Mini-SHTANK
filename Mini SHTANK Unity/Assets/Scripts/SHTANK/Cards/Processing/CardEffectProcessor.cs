@@ -32,7 +32,7 @@ namespace SHTANK.Cards.Processing
                     switch (cardEffect.CardEffectType)
                     {
                         case CardEffectType.Damage:
-                            _tmpEffectProcessor = new EffectProcessor_Damage(cardEffect.DamageInfo, _tmpQueuedCardInfo.SourceCombatEntity);
+                            _tmpEffectProcessor = new EffectProcessor_Damage(cardEffect.DamageInfo, _tmpQueuedCardInfo.SourceCombatEntity, _tmpQueuedCardInfo.TargetCombatEntityArray);
                             break;
                         case CardEffectType.ChangeArea:
                             break;

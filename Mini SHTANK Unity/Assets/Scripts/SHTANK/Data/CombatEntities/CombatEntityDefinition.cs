@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using SHTANK.Combat;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
 
@@ -19,6 +20,8 @@ namespace SHTANK.Data.CombatEntities
         public int ComboBonus => _comboBonus;
         public int Metabolism => _metabolism;
         public int Speed => _speed;
+        public int Movement => _movement;
+        public int ExperienceAwarded => _experienceAwarded;
 
         [SerializeField] private CombatEntityType _combatEntityType;
         
@@ -42,6 +45,8 @@ namespace SHTANK.Data.CombatEntities
         [SerializeField] private int _speedRating;
         [ShowIf("_combatEntityType", CombatEntityType.Player)]
         [SerializeField] private int _movement = 2;
+        [ShowIf("_combatEntityType", CombatEntityType.Enemy)]
+        [SerializeField] private int _experienceAwarded;
         
         [Header("Growth Rates")]
         [Range(0.0f, 100.0f)]
