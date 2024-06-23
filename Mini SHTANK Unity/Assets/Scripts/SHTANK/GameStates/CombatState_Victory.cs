@@ -43,7 +43,7 @@ namespace SHTANK.GameStates
             Manager.UpdateInstructionPopup();
 
             CardManager.Instance.ReturnCardsToDeck();
-            _combatResolutionManager.StartCombatResolution(new CombatResolutionInfo(true, null, null));
+            _combatResolutionManager.StartCombatResolution(new CombatResolutionInfo(true, _combatManager.StoredPlayers.ToArray(), _combatManager.StoredEnemy));
 
             _continueButton.interactable = true;
         }
@@ -66,7 +66,7 @@ namespace SHTANK.GameStates
 
         public override void ProcessStateFixed()
         {
-            
+
         }
     }
 }

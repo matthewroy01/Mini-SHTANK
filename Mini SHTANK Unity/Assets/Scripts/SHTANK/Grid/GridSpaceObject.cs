@@ -1,7 +1,6 @@
 ﻿using System;
 using NaughtyAttributes;
 using UnityEngine;
-using Utility;
 
 namespace SHTANK.Grid
 {
@@ -11,7 +10,7 @@ namespace SHTANK.Grid
         public GridSpaceType GridSpaceType => _gridSpaceType;
         public string ID => _id;
         public Vector3Int IntWorldPosition => _intWorldPosition;
-        
+
         [SerializeField] private MeshRenderer _meshRenderer;
         [Space]
         [Header("Pre-Runtime Data")]
@@ -19,7 +18,7 @@ namespace SHTANK.Grid
         [ReadOnly] [SerializeField] private GridSpaceType _gridSpaceType = GridSpaceType.None;
         [ReadOnly] [SerializeField] private string _id;
         [ReadOnly] [SerializeField] private Vector3Int _intWorldPosition;
-        
+
         public void UpdateWithNewGridSpaceType(GridSpaceType gridSpaceType)
         {
             _meshRenderer.material.color = GridManager.Instance.GetGridSpaceColor(gridSpaceType);
@@ -39,9 +38,9 @@ namespace SHTANK.Grid
         {
             if (gridSpaceType != _gridSpaceType)
                 UpdateWithNewGridSpaceType(gridSpaceType);
-            
+
             _gridSpaceType = gridSpaceType;
-            
+
             UpdateGameObjectName();
         }
 

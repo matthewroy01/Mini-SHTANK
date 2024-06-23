@@ -8,6 +8,8 @@ namespace SHTANK.Combat
 {
     public class CombatResolutionManager : Singleton<CombatResolutionManager>
     {
+        public event Action<CombatResolutionInfo> ResolvingCombat;
+
         [SerializeField] private CanvasGroup _victoryCanvasGroup;
         [SerializeField] private CanvasGroup _defeatCanvasGroup;
         [SerializeField] private FadeTweenHelper _victoryInFadeTweenHelper;
@@ -21,6 +23,7 @@ namespace SHTANK.Combat
         public void StartCombatResolution(CombatResolutionInfo combatResolutionInfo)
         {
             _combatResolutionInfo = combatResolutionInfo;
+            ResolvingCombat?.Invoke(_combatResolutionInfo);
 
             if (_combatResolutionCoroutine != null)
                 StopCoroutine(_combatResolutionCoroutine);

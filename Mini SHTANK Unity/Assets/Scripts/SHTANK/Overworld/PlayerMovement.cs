@@ -1,4 +1,3 @@
-using System;
 using SHTANK.Input;
 using UnityEngine;
 using Utility.Physics;
@@ -50,7 +49,7 @@ namespace SHTANK.Overworld
             }
             else
             {
-                _movementForce = Vector3.Lerp(_movementForce, new Vector3(_movementVector.x * _accelerationTarget, 0.0f, _movementVector.y * _accelerationTarget), Time.deltaTime * DetermineAcceleration());   
+                _movementForce = Vector3.Lerp(_movementForce, new Vector3(_movementVector.x * _accelerationTarget, 0.0f, _movementVector.y * _accelerationTarget), Time.deltaTime * DetermineAcceleration());
             }
 
             _rigidbody.AddForce(_movementForce);
@@ -72,7 +71,7 @@ namespace SHTANK.Overworld
         {
             if (!_inputManager.Jump)
                 return;
-            
+
             if (!_groundChecker.Grounded)
                 return;
 
@@ -86,9 +85,12 @@ namespace SHTANK.Overworld
             return _groundChecker.Grounded ? _acceleration : _acceleration * _airborneAccelerationMultiplier;
         }
 
-        public void StopVelocity()
+        public void TogglePhysics(bool value)
         {
-            _rigidbody.velocity = Vector3.zero;
+            if (!value)
+                _rigidbody.velocity = Vector3.zero;
+
+            _rigidbody.isKinematic = !value;
         }
     }
 }

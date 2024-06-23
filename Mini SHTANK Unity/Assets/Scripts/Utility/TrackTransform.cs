@@ -1,4 +1,3 @@
-using System;
 using SHTANK.Overworld;
 using UnityEngine;
 
@@ -7,7 +6,7 @@ namespace Utility
     public class TrackTransform : MonoBehaviour
     {
         [SerializeField] private MeshRenderer _meshRenderer;
-        
+
         private Transform _t;
         private static readonly int _playerPosition = Shader.PropertyToID("_PlayerPosition");
         private static readonly int _myPosition = Shader.PropertyToID("_MyPosition");

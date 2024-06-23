@@ -65,7 +65,7 @@ namespace SHTANK.GameStates
 
         public override void ProcessStateFixed()
         {
-            
+
         }
     }
 }

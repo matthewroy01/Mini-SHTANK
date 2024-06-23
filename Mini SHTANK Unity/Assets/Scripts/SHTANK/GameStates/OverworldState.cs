@@ -1,5 +1,4 @@
-﻿using System;
-using SHTANK.Overworld;
+﻿using SHTANK.Overworld;
 using UnityEngine;
 using Utility.StateMachine;
 
@@ -12,13 +11,16 @@ namespace SHTANK.GameStates
 
         public override void EnterState()
         {
+            _playerMovement.TogglePhysics(true);
             _playerMovement.gameObject.SetActive(true);
+            _enemyManager.ToggleEnemies(true);
+            _enemyManager.TryKillEnemies();
         }
 
         public override void ExitState()
         {
             _playerMovement.gameObject.SetActive(false);
-            _playerMovement.StopVelocity();
+            _playerMovement.TogglePhysics(false);
             _enemyManager.ToggleEnemies(false);
         }
 

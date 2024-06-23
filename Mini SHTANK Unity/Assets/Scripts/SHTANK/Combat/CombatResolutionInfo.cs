@@ -10,7 +10,7 @@
         private readonly CombatEntity[] _involvedPlayerArray;
         private readonly CombatEntity[] _involvedEnemyArray;
 
-        public CombatResolutionInfo(bool playerVictory, CombatEntity[] involvedPlayerArray, CombatEntity[] involvedEnemyArray)
+        public CombatResolutionInfo(bool playerVictory, CombatEntity[] involvedPlayerArray, params CombatEntity[] involvedEnemyArray)
         {
             _playerVictory = playerVictory;
             _involvedPlayerArray = involvedPlayerArray;
