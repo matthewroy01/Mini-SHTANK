@@ -8,6 +8,7 @@ namespace SHTANK.Overworld
 {
     public class Level : Singleton<Level>
     {
+        public List<Enemy> EnemyList => _enemyList;
         [SerializeField] private EnemyManager _enemyManager;
         [SerializeField] private List<Enemy> _enemyList = new();
 

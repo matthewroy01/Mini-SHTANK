@@ -7,6 +7,8 @@ namespace SHTANK.Overworld
 {
     public class EnemyManager : Singleton<EnemyManager>
     {
+        public List<Enemy> EnemyList => _enemyList;
+
         [SerializeField] private CombatManager _combatManager;
         [SerializeField] private CombatResolutionManager _combatResolutionManager;
 

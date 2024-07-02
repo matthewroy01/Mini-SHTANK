@@ -1,5 +1,7 @@
-﻿using SHTANK.Overworld;
+﻿using SHTANK.Grid;
+using SHTANK.Overworld;
 using UnityEngine;
+using Utility;
 using Utility.StateMachine;
 
 namespace SHTANK.GameStates
@@ -8,6 +10,7 @@ namespace SHTANK.GameStates
     {
         [SerializeField] private PlayerMovement _playerMovement;
         [SerializeField] private EnemyManager _enemyManager;
+        [SerializeField] private GridShaderManager _gridShaderManager;
 
         public override void EnterState()
         {
@@ -27,6 +30,7 @@ namespace SHTANK.GameStates
         public override void ProcessState()
         {
             _playerMovement.MyUpdate();
+            _gridShaderManager.UpdateGridVisuals();
         }
 
         public override void ProcessStateFixed()

@@ -81,7 +81,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _combatEntityDefinition: {fileID: 11400000, guid: e1547c8c105def3428ac1d21b98d7ea5, type: 2}
-  _collider: {fileID: 6339701763254347407}
   _artContainer: {fileID: 6339701764116262643}
   _fallOverParent: {fileID: 6398367511762240903}
 --- !u!54 &6339701763254347393

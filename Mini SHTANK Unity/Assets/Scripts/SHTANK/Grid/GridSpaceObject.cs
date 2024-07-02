@@ -11,7 +11,7 @@ namespace SHTANK.Grid
         public string ID => _id;
         public Vector3Int IntWorldPosition => _intWorldPosition;
 
-        [SerializeField] private MeshRenderer _meshRenderer;
+        [SerializeField] private GridSpaceVisual _gridSpaceVisual;
         [Space]
         [Header("Pre-Runtime Data")]
         [ReadOnly] [SerializeField] private GridConnections _gridConnections;
@@ -21,7 +21,7 @@ namespace SHTANK.Grid
 
         public void UpdateWithNewGridSpaceType(GridSpaceType gridSpaceType)
         {
-            _meshRenderer.material.color = GridManager.Instance.GetGridSpaceColor(gridSpaceType);
+            _gridSpaceVisual.SetColor(GridManager.Instance.GetGridSpaceColor(gridSpaceType));
         }
 
         public void UpdateGameObjectName()
