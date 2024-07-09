@@ -8,7 +8,8 @@
 
         public override void ProcessStateFixed()
         {
-            Manager.MoveCamera(_targetTransform, _cameraStateParameters);
+            Manager.MoveCamera(Manager.MainCameraTransform, _mainTargetTransform, _mainCameraStateParameters);
+            Manager.MoveCamera(Manager.SplitScreenCameraTransform, _splitScreenTargetTransform, _useSeparateParameters ? _splitScreenCameraStateParameters : _mainCameraStateParameters);
         }
     }
 }

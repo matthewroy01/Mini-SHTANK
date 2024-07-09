@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using NaughtyAttributes;
+using UnityEngine;
 
 namespace SHTANK.Data
 {
@@ -13,7 +14,7 @@ namespace SHTANK.Data
         [Header("Position")]
         [SerializeField] private Vector3 _positionOffset;
         [SerializeField] private float _followSpeed;
-        [Header("Rotation")]        
+        [Header("Rotation")]
         [SerializeField] private float _pitchAngle;
         [SerializeField] private float _rotationSpeed;
     }

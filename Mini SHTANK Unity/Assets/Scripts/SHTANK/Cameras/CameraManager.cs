@@ -1,5 +1,3 @@
-using System;
-using NaughtyAttributes;
 using SHTANK.Data;
 using SHTANK.GameStates;
 using UnityEngine;
@@ -9,7 +7,11 @@ namespace SHTANK.Cameras
 {
     public class CameraManager : MonoBehaviour
     {
-        [SerializeField] private Transform _cameraTransform;
+        public Transform MainCameraTransform => _mainCameraTransform;
+        public Transform SplitScreenCameraTransform => _splitScreenCameraTransform;
+
+        [SerializeField] private Transform _mainCameraTransform;
+        [SerializeField] private Transform _splitScreenCameraTransform;
         [SerializeField] private GameManager _gameManager;
         [Header("States")]
         [SerializeField] private OverworldState _overworldState;
@@ -18,6 +20,8 @@ namespace SHTANK.Cameras
         private Vector3 _targetPosition;
         private Vector3 _eulerAngles;
         private float _targetPitch;
+        private Camera _splitScreenCamera;
+        private GameObject _quad;
 
         private void OnEnable()
         {
@@ -50,7 +54,7 @@ namespace SHTANK.Cameras
         {
             _overworldState.SetManager(this);
             _combatState.SetManager(this);
-            
+
             _stateMachine = new StateMachine(_overworldState,
                 new Connection(_overworldState, _combatState),
                 new Connection(_combatState, _overworldState));
@@ -66,17 +70,26 @@ namespace SHTANK.Cameras
             _stateMachine.CurrentState.ProcessStateFixed();
         }
 
-        public void MoveCamera(Transform targetTransform, CameraStateParameters cameraStateParameters)
+        public void MoveCamera(Transform cameraTransform, Transform targetTransform, CameraStateParameters cameraStateParameters)
         {
-            if (targetTransform == null)
+            if (cameraTransform == null || targetTransform == null || cameraStateParameters == null)
                 return;
-            
-            _targetPosition = targetTransform.position + cameraStateParameters.PositionOffset;
-            _cameraTransform.position = Vector3.Lerp(_cameraTransform.position, _targetPosition, Time.deltaTime * cameraStateParameters.FollowSpeed);
 
-            _eulerAngles = _cameraTransform.eulerAngles;
-            _targetPitch = Mathf.Lerp(_eulerAngles.x, cameraStateParameters.PitchAngle, Time.deltaTime * cameraStateParameters.RotationSpeed);
-            _cameraTransform.eulerAngles = new Vector3(_targetPitch, _eulerAngles.y, _eulerAngles.z);
+            _MoveCamera();
+            _RotateCamera();
+
+            void _MoveCamera()
+            {
+                _targetPosition = targetTransform.position + cameraStateParameters.PositionOffset;
+                cameraTransform.position = Vector3.Lerp(cameraTransform.position, _targetPosition, Time.deltaTime * cameraStateParameters.FollowSpeed);
+            }
+
+            void _RotateCamera()
+            {
+                _eulerAngles = cameraTransform.eulerAngles;
+                _targetPitch = Mathf.Lerp(_eulerAngles.x, cameraStateParameters.PitchAngle, Time.deltaTime * cameraStateParameters.RotationSpeed);
+                cameraTransform.eulerAngles = new Vector3(_targetPitch, _eulerAngles.y, _eulerAngles.z);
+            }
         }
     }
 }

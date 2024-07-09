@@ -7,14 +7,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ProximityAlpha
-  m_Shader: {fileID: -6465566751694194690, guid: bb8e2310d205ae440bbab7fa434be99d, type: 3}
+  m_Name: SplitScreen
+  m_Shader: {fileID: 4800000, guid: 14342f154a761ff45a3bc115833028ba, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
+  m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -25,10 +25,6 @@ Material:
     m_TexEnvs:
     - _BaseMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _BaseTexture:
-        m_Texture: {fileID: 2800000, guid: ec61365e368961d4b831ed03e625012b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -86,39 +82,24 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
-    - _AlphaLerpSpeed: 1
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _ClosestEnemyDistanceToPlayer: 6.7218003
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DitherSize: 2
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EnemyDistanceToPlayer0: 4.236508
-    - _EnemyDistanceToPlayer1: 9.907376
-    - _EnemyDistanceToPlayer2: 0
-    - _EnemyDistanceToPlayer3: 0
-    - _EnemyDistanceToPlayer4: 0
-    - _EnemyDistanceToPlayer5: 0
-    - _EnemyHighlightMaxRange: 4
-    - _EnemyHighlightMinRange: 1
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _MaxRange: 5
     - _Metallic: 0
-    - _MinRange: 0.5
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _PlayerDistanceMaxRange: 6
-    - _PlayerDistanceMinRange: 4
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -131,21 +112,12 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.15804419, g: 0.3207547, b: 0.15583839, a: 1}
-    - _ClosestEnemyPosition: {r: 3.85, g: 0, b: 5.51, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EnemyPosition0: {r: 3.42, g: 0, b: 2.5, a: 0}
-    - _EnemyPosition1: {r: 9.01, g: 0, b: 4.12, a: 0}
-    - _EnemyPosition2: {r: 0, g: 0, b: 0, a: 0}
-    - _EnemyPosition3: {r: 0, g: 0, b: 0, a: 0}
-    - _EnemyPosition4: {r: 0, g: 0, b: 0, a: 0}
-    - _EnemyPosition5: {r: 0, g: 0, b: 0, a: 0}
-    - _MyPosition: {r: 0, g: 0, b: 0, a: 0}
-    - _PlayerPosition: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &1688928955635294994
+--- !u!114 &8374547082748519243
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
