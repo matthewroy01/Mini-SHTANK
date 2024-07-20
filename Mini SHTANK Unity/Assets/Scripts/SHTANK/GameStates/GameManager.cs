@@ -1,5 +1,7 @@
 using System;
 using NaughtyAttributes;
+using SHTANK.Cameras;
+using SHTANK.Combat;
 using SHTANK.UI;
 using UnityEngine;
 using Utility;
@@ -9,9 +11,13 @@ namespace SHTANK.GameStates
 {
     public class GameManager : Singleton<GameManager>
     {
-        public event Action EnteringCombatState;
+        public event Action EnteringCombatStateStart;
+        public event Action EnteringCombatStateSelect;
         public event Action EnteringOverworldState;
-        
+
+        public CameraManager CameraManager => _cameraManager;
+        public CombatBeginningInfo CombatBeginningInfo => _combatBeginningInfo;
+
         [Header("States")]
         [SerializeField] private OverworldState _overworldState;
         [SerializeField] private CombatState_Start _combatStateStart;
@@ -22,9 +28,11 @@ namespace SHTANK.GameStates
         [SerializeField] private CombatState_Defeat _combatStateDefeat;
         [Space]
         [SerializeField] private InstructionPopup _instructionPopup;
+        [SerializeField] private CameraManager _cameraManager;
         [ShowNativeProperty] private string _currentStateName => (_stateMachine == null || _stateMachine.CurrentState == null) ? "None" : _stateMachine.CurrentState.StateName;
-        
+
         private StateMachine _stateMachine;
+        private CombatBeginningInfo _combatBeginningInfo;
 
         private void OnEnable()
         {
@@ -50,7 +58,12 @@ namespace SHTANK.GameStates
 
         private void CombatStateStart_OnDoneWithAnimation()
         {
-            _stateMachine.TryChangeState(_combatStateSelect);
+            bool result = _stateMachine.TryChangeState(_combatStateSelect);
+
+            if (!result)
+                return;
+
+            EnteringCombatStateSelect?.Invoke();
         }
 
         private void CombatStateSelect_OnDoneSelecting()
@@ -127,14 +140,16 @@ namespace SHTANK.GameStates
             _stateMachine.CurrentState.ProcessStateFixed();
         }
 
-        public bool TryEnterCombatState()
+        public bool TryBeginCombat(CombatBeginningInfo combatBeginningInfo)
         {
+            _combatBeginningInfo = combatBeginningInfo;
+
             bool result = _stateMachine.TryChangeState(_combatStateStart);
 
             if (!result)
                 return false;
 
-            EnteringCombatState?.Invoke();
+            EnteringCombatStateStart?.Invoke();
             return true;
         }
 
@@ -142,7 +157,7 @@ namespace SHTANK.GameStates
         {
             if (!_stateMachine.TryChangeState(_overworldState))
                 return;
-            
+
             EnteringOverworldState?.Invoke();
         }
 

@@ -1,5 +1,6 @@
 using SHTANK.Data;
 using SHTANK.GameStates;
+using SHTANK.Overworld;
 using UnityEngine;
 using Utility.StateMachine;
 
@@ -9,87 +10,71 @@ namespace SHTANK.Cameras
     {
         public Transform MainCameraTransform => _mainCameraTransform;
         public Transform SplitScreenCameraTransform => _splitScreenCameraTransform;
+        public Transform CombatTargetTransform => _combatTargetTransform;
+        public CameraStateParameters CombatCameraStateParameters => _combatCameraStateParameters;
 
         [SerializeField] private Transform _mainCameraTransform;
         [SerializeField] private Transform _splitScreenCameraTransform;
-        [SerializeField] private GameManager _gameManager;
-        [Header("States")]
-        [SerializeField] private OverworldState _overworldState;
-        [SerializeField] private CombatState _combatState;
-        private StateMachine _stateMachine;
+        [SerializeField] private Camera _splitScreenCamera;
+        [SerializeField] private GameObject _quad;
+        [Header("Targets")]
+        [SerializeField] private Transform _overworldTargetTransform;
+        [SerializeField] private Transform _combatTargetTransform;
+        [Header("Camera Parameters")]
+        [SerializeField] private CameraStateParameters _overworldCameraStateParameters;
+        [SerializeField] private CameraStateParameters _combatCameraStateParameters;
         private Vector3 _targetPosition;
         private Vector3 _eulerAngles;
         private float _targetPitch;
-        private Camera _splitScreenCamera;
-        private GameObject _quad;
-
-        private void OnEnable()
-        {
-            _gameManager.EnteringCombatState += OnEnteringCombatState;
-            _gameManager.EnteringOverworldState += OnEnteringOverworldState;
-        }
-
-        private void OnDisable()
-        {
-            _gameManager.EnteringCombatState -= OnEnteringCombatState;
-            _gameManager.EnteringOverworldState -= OnEnteringOverworldState;
-        }
-
-        private void OnEnteringCombatState()
-        {
-            _stateMachine.TryChangeState(_combatState);
-        }
-
-        private void OnEnteringOverworldState()
-        {
-            _stateMachine.TryChangeState(_overworldState);
-        }
+        private EnemyManager _enemyManager;
+        private PlayerMovement _playerMovement;
 
         private void Awake()
         {
-            InitializeStateMachine();
+            _enemyManager = EnemyManager.Instance;
+            _playerMovement = FindObjectOfType<PlayerMovement>();
         }
 
-        private void InitializeStateMachine()
+        public void DoOverworldCameraBehavior()
         {
-            _overworldState.SetManager(this);
-            _combatState.SetManager(this);
+            MoveCamera(_mainCameraTransform, _overworldTargetTransform, _overworldCameraStateParameters);
+            MoveCamera(_splitScreenCameraTransform, _overworldTargetTransform, _overworldCameraStateParameters);
 
-            _stateMachine = new StateMachine(_overworldState,
-                new Connection(_overworldState, _combatState),
-                new Connection(_combatState, _overworldState));
+            RotateCamera(_mainCameraTransform, _overworldTargetTransform, _overworldCameraStateParameters);
+            RotateCamera(_splitScreenCameraTransform, _overworldTargetTransform, _overworldCameraStateParameters);
         }
 
-        private void Update()
+        public void DoCombatCameraBehavior()
         {
-            _stateMachine.CurrentState.ProcessState();
+            MoveCamera(_mainCameraTransform, _combatTargetTransform, _combatCameraStateParameters);
+            MoveCamera(_splitScreenCameraTransform, _combatTargetTransform, _combatCameraStateParameters);
+
+            RotateCamera(_mainCameraTransform, _combatTargetTransform, _combatCameraStateParameters);
+            RotateCamera(_splitScreenCameraTransform, _combatTargetTransform, _combatCameraStateParameters);
         }
 
-        private void FixedUpdate()
-        {
-            _stateMachine.CurrentState.ProcessStateFixed();
-        }
+        public void DoZoomSplitCameraBehavior() { }
 
-        public void MoveCamera(Transform cameraTransform, Transform targetTransform, CameraStateParameters cameraStateParameters)
+        private void MoveCamera(Transform cameraTransform, Transform targetTransform, CameraStateParameters cameraStateParameters)
         {
             if (cameraTransform == null || targetTransform == null || cameraStateParameters == null)
                 return;
 
-            _MoveCamera();
-            _RotateCamera();
+            _targetPosition = targetTransform.position + cameraStateParameters.PositionOffset;
+            cameraTransform.position = Vector3.Lerp(cameraTransform.position, _targetPosition, Time.deltaTime * cameraStateParameters.FollowSpeed);
+        }
 
-            void _MoveCamera()
-            {
-                _targetPosition = targetTransform.position + cameraStateParameters.PositionOffset;
-                cameraTransform.position = Vector3.Lerp(cameraTransform.position, _targetPosition, Time.deltaTime * cameraStateParameters.FollowSpeed);
-            }
+        private void RotateCamera(Transform cameraTransform, Transform targetTransform, CameraStateParameters cameraStateParameters)
+        {
+            _eulerAngles = cameraTransform.eulerAngles;
+            _targetPitch = Mathf.Lerp(_eulerAngles.x, cameraStateParameters.PitchAngle, Time.deltaTime * cameraStateParameters.RotationSpeed);
+            cameraTransform.eulerAngles = new Vector3(_targetPitch, _eulerAngles.y, _eulerAngles.z);
+        }
 
-            void _RotateCamera()
-            {
-                _eulerAngles = cameraTransform.eulerAngles;
-                _targetPitch = Mathf.Lerp(_eulerAngles.x, cameraStateParameters.PitchAngle, Time.deltaTime * cameraStateParameters.RotationSpeed);
-                cameraTransform.eulerAngles = new Vector3(_targetPitch, _eulerAngles.y, _eulerAngles.z);
-            }
+        public void ToggleSplitScreenCamera(bool enable)
+        {
+            _splitScreenCamera.enabled = enable;
+            _quad.SetActive(enable);
         }
     }
 }

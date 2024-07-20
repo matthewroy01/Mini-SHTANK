@@ -31,6 +31,7 @@ namespace SHTANK.Combat
         private CombatEntity _storedEnemy;
         private readonly List<CombatEntity> _storedPlayers = new();
         private float _currentDamageMultiplier = 1.0f;
+        private GridSpaceObject _enemyGridSpaceObject;
 
         protected override void Awake()
         {
@@ -43,23 +44,23 @@ namespace SHTANK.Combat
                 _combatEntityPoolEventContainer.OnDestroy);
         }
 
-        public void BeginCombat(Enemy enemy, Vector3 worldPosition)
+        public void InitializeGrid(CombatBeginningInfo combatBeginningInfo)
         {
-            if (!GameManager.Instance.TryEnterCombatState())
-                return;
+            _gridManager.InitializeGridForCombat(combatBeginningInfo.WorldPosition);
+            _enemyGridSpaceObject = _gridManager.GetCurrentEnemySpace();
+            _combatCenterTransform.position = _enemyGridSpaceObject.IntWorldPosition;
+        }
 
-            _gridManager.InitializeGridForCombat(worldPosition);
-            GridSpaceObject enemyGridSpaceObject = _gridManager.GetCurrentEnemySpace();
-            _combatCenterTransform.position = enemyGridSpaceObject.IntWorldPosition;
-
-            CreateEnemyCombatEntity(enemy);
+        public void BeginCombat(CombatBeginningInfo combatBeginningInfo)
+        {
+            CreateEnemyCombatEntity(combatBeginningInfo.Enemy);
 
             CreatePlayerCombatEntities();
 
-            PositionEnemyCombatEntity(enemyGridSpaceObject);
-            PositionPlayerCombatEntities(enemyGridSpaceObject);
+            PositionEnemyCombatEntity(_enemyGridSpaceObject);
+            PositionPlayerCombatEntities(_enemyGridSpaceObject);
 
-            Enemy[] enemyArray = new Enemy[] { enemy };
+            Enemy[] enemyArray = new Enemy[] { combatBeginningInfo.Enemy };
             BeganCombat?.Invoke(enemyArray);
         }
 

@@ -22,9 +22,7 @@ namespace SHTANK.GameStates
 
         public override void ExitState()
         {
-            _playerMovement.gameObject.SetActive(false);
             _playerMovement.TogglePhysics(false);
-            _enemyManager.ToggleEnemies(false);
         }
 
         public override void ProcessState()
@@ -36,6 +34,7 @@ namespace SHTANK.GameStates
         public override void ProcessStateFixed()
         {
             _playerMovement.MyFixedUpdate();
+            Manager.CameraManager.DoOverworldCameraBehavior();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using DG.Tweening;
 using SHTANK.Combat;
 using SHTANK.Data.CombatEntities;
+using SHTANK.GameStates;
 using UnityEngine;
 
 namespace SHTANK.Overworld
@@ -27,7 +28,7 @@ namespace SHTANK.Overworld
             if (other.GetComponent<PlayerMovement>() == null)
                 return;
 
-            CombatManager.Instance.BeginCombat(this, transform.position);
+            GameManager.Instance.TryBeginCombat(new CombatBeginningInfo(this, transform.position));
         }
 
         public void MarkAsDead()

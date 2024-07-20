@@ -10,7 +10,7 @@ namespace SHTANK.GameStates
     public class CombatState_Select : ManagerState<GameManager>
     {
         public event Action DoneSelecting;
-        
+
         [SerializeField] private CardManager _cardManager;
         [Space]
         [SerializeField] private LayerMask _gridSpaceLayerMask;
@@ -19,7 +19,7 @@ namespace SHTANK.GameStates
         [SerializeField] private string _instructionText;
         private MouseResult<GridSpaceObject> _mouseResult;
         private GridSpaceObject _currentGridSpaceObject;
-        
+
         // TODO: enable hands of cards and movement selection
 
         private void OnEnable()
@@ -56,6 +56,7 @@ namespace SHTANK.GameStates
         public override void ProcessStateFixed()
         {
             UpdateCurrentGridSpaceObject();
+            Manager.CameraManager.DoCombatCameraBehavior();
         }
 
         private void UpdateCurrentGridSpaceObject()
@@ -66,7 +67,7 @@ namespace SHTANK.GameStates
             {
                 if (_currentGridSpaceObject == _mouseResult.Component)
                     return;
-                
+
                 // TODO: grid space object was selected
                 _NewGridSpaceSelected();
             }
@@ -74,7 +75,7 @@ namespace SHTANK.GameStates
             {
                 if (_currentGridSpaceObject == null)
                     return;
-                
+
                 // TODO: grid space object was deselected
                 _GridSpaceDeselected();
             }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using SHTANK.Combat;
 using UnityEngine;
 using Utility;
@@ -8,6 +9,7 @@ namespace SHTANK.Overworld
     public class EnemyManager : Singleton<EnemyManager>
     {
         public List<Enemy> EnemyList => _enemyList;
+        public List<Enemy> InCombatEnemyList => _inCombatEnemyList;
 
         [SerializeField] private CombatManager _combatManager;
         [SerializeField] private CombatResolutionManager _combatResolutionManager;
