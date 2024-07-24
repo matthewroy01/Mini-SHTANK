@@ -1,8 +1,6 @@
 using SHTANK.Data;
-using SHTANK.GameStates;
 using SHTANK.Overworld;
 using UnityEngine;
-using Utility.StateMachine;
 
 namespace SHTANK.Cameras
 {
@@ -23,6 +21,10 @@ namespace SHTANK.Cameras
         [Header("Camera Parameters")]
         [SerializeField] private CameraStateParameters _overworldCameraStateParameters;
         [SerializeField] private CameraStateParameters _combatCameraStateParameters;
+        [Header("UI Particles")]
+        [SerializeField] private ParticleSystem _inSpeedLines;
+        [SerializeField] private ParticleSystem _outSpeedLines;
+        [SerializeField] private ParticleSystem _splitParticleSystem;
         private Vector3 _targetPosition;
         private Vector3 _eulerAngles;
         private float _targetPitch;
@@ -75,6 +77,52 @@ namespace SHTANK.Cameras
         {
             _splitScreenCamera.enabled = enable;
             _quad.SetActive(enable);
+        }
+
+        public void ToggleInSpeedlines(bool value)
+        {
+            if (value)
+            {
+                PlayParticleSystem(_inSpeedLines);
+            }
+            else
+            {
+                StopParticleSystem(_inSpeedLines);
+            }
+        }
+
+        public void ToggleOutSpeedlines(bool value)
+        {
+            if (value)
+            {
+                PlayParticleSystem(_outSpeedLines);
+            }
+            else
+            {
+                StopParticleSystem(_outSpeedLines);
+            }
+        }
+
+        public void ToggleSplitParticleSystem(bool value)
+        {
+            if (value)
+            {
+                PlayParticleSystem(_splitParticleSystem);
+            }
+            else
+            {
+                StopParticleSystem(_splitParticleSystem);
+            }
+        }
+
+        private void PlayParticleSystem(ParticleSystem particleSystem)
+        {
+            particleSystem.Play();
+        }
+
+        private void StopParticleSystem(ParticleSystem particleSystem)
+        {
+            particleSystem.Stop();
         }
     }
 }

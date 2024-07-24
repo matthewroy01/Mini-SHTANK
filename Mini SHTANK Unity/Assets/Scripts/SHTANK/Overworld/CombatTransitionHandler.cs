@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using SHTANK.Cameras;
 using SHTANK.Data;
@@ -13,7 +14,7 @@ namespace SHTANK.Overworld
         [SerializeField] private CameraManager _cameraManager;
         [Header("Visuals")]
         [SerializeField] private TextMeshProUGUI _vsTextTextMeshProUGUI;
-        [SerializeField] private CanvasGroup _vsTextCanvasGroup;
+        [SerializeField] private List<CanvasGroup> _vsTextCanvasGroupList = new();
 
         private Tweener _vsTextMeshProUGUIScaleTween;
         private Tweener _vsTextCanvasGroupFadeTween;
@@ -32,7 +33,7 @@ namespace SHTANK.Overworld
         public IEnumerator ZoomInCameras(float duration, Player player, Enemy enemy)
         {
             _cameraManager.ToggleSplitScreenCamera(true);
-
+            _cameraManager.ToggleInSpeedlines(true);
 
             Vector3 mainCameraTargetPosition = player.transform.position - (Vector3.forward * 0.3f) + (Vector3.up * 0.7f) + (Vector3.right * 0.3f);
             Vector3 splitScreenCameraTargetPosition = enemy.transform.position - (Vector3.forward * 0.3f) + (Vector3.up * 0.8f) + (Vector3.right * -0.2f);
@@ -47,7 +48,11 @@ namespace SHTANK.Overworld
             _splitScreenCameraZoomTween = _cameraManager.SplitScreenCameraTransform.DOMove(splitScreenCameraTargetPosition, duration).SetEase(Ease.InBack);
             _splitScreenCameraRotationTween = _cameraManager.SplitScreenCameraTransform.DORotate(Vector3.forward, duration).SetEase(Ease.InOutQuad);
 
-            yield return new WaitForSeconds(duration);
+            yield return new WaitForSeconds(duration * 0.65f);
+
+            _cameraManager.ToggleInSpeedlines(false);
+
+            yield return new WaitForSeconds(duration * 0.35f);
         }
 
         public void DoVSEffect()
@@ -58,9 +63,13 @@ namespace SHTANK.Overworld
             float duration = 1.0f;
             _vsTextTextMeshProUGUI.transform.localScale = Vector2.one * 3.0f;
             _vsTextMeshProUGUIScaleTween = _vsTextTextMeshProUGUI.transform.DOScale(Vector2.one, duration);
-            _vsTextCanvasGroupFadeTween = _vsTextCanvasGroup.DOFade(1.0f, duration);
 
-            // TODO: add other visuals here, such as particle systems
+            foreach (CanvasGroup canvasGroup in _vsTextCanvasGroupList)
+            {
+                canvasGroup.DOFade(1.0f, duration);
+            }
+
+            _cameraManager.ToggleSplitParticleSystem(true);
         }
 
         private void ClearVSEffect()
@@ -70,12 +79,20 @@ namespace SHTANK.Overworld
 
             float duration = 0.3f;
             _vsTextTextMeshProUGUI.transform.DOScale(Vector2.one * 3.0f, duration);
-            _vsTextCanvasGroup.DOFade(0.0f, duration);
+
+            foreach (CanvasGroup canvasGroup in _vsTextCanvasGroupList)
+            {
+                canvasGroup.DOFade(0.0f, duration);
+            }
+
+            _cameraManager.ToggleSplitParticleSystem(false);
         }
 
         public IEnumerator ZoomOutCameras(float duration, CameraStateParameters cameraStateParameters)
         {
             ClearVSEffect();
+
+            _cameraManager.ToggleOutSpeedlines(true);
 
             _mainCameraZoomTween?.Kill();
             _mainCameraRotationTween?.Kill();
@@ -90,7 +107,11 @@ namespace SHTANK.Overworld
             _splitScreenCameraZoomTween = _cameraManager.SplitScreenCameraTransform.DOMove(targetPosition, duration).SetEase(Ease.InOutQuint);
             _splitScreenCameraRotationTween = _cameraManager.SplitScreenCameraTransform.DORotate(targetRotation, duration).SetEase(Ease.InOutQuint);
 
-            yield return new WaitForSeconds(duration);
+            yield return new WaitForSeconds(duration * 0.65f);
+
+            _cameraManager.ToggleOutSpeedlines(false);
+
+            yield return new WaitForSeconds(duration * 0.35f);
 
             _cameraManager.ToggleSplitScreenCamera(false);
         }
