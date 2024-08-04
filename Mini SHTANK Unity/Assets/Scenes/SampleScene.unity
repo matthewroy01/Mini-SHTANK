@@ -25097,6 +25097,7 @@ MonoBehaviour:
   _vsTextCanvasGroupList:
   - {fileID: 727666333}
   - {fileID: 856969072}
+  _playerEnemySeparationAmount: 1
 --- !u!1 &530111858
 GameObject:
   m_ObjectHideFlags: 0
@@ -28085,7 +28086,7 @@ GameObject:
   - component: {fileID: 588743945}
   - component: {fileID: 588743944}
   - component: {fileID: 588743943}
-  m_Layer: 5
+  m_Layer: 1
   m_Name: SplitScreenCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43289,7 +43290,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 888697005}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: === UI ===
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93394,7 +93395,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1888698092}
-  m_Layer: 5
+  m_Layer: 1
   m_Name: ScreenSplitPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98380,7 +98381,7 @@ GameObject:
   - component: {fileID: 1996212311}
   - component: {fileID: 1996212313}
   - component: {fileID: 1996212312}
-  m_Layer: 5
+  m_Layer: 1
   m_Name: '"Quad"'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
