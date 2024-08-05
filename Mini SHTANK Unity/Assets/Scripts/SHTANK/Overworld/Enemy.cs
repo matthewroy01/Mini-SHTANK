@@ -16,6 +16,8 @@ namespace SHTANK.Overworld
         [Header("Transforms")]
         [SerializeField] private Transform _artContainer;
         [SerializeField] private Transform _fallOverParent;
+        [Header("Other Visuals")]
+        [SerializeField] private ParticleSystem _alertParticleSystem;
 
         private bool _dead;
         private Coroutine _deathRoutine;
@@ -60,6 +62,11 @@ namespace SHTANK.Overworld
             yield return new WaitForSeconds(1.5f);
 
             Destroy(gameObject);
+        }
+
+        public void PlayAlertParticleSystem()
+        {
+            _alertParticleSystem.Play();
         }
     }
 }

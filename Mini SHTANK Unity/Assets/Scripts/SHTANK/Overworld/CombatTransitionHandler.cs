@@ -15,17 +15,27 @@ namespace SHTANK.Overworld
         [Header("Visuals")]
         [SerializeField] private TextMeshProUGUI _vsTextTextMeshProUGUI;
         [SerializeField] private List<CanvasGroup> _vsTextCanvasGroupList = new();
+        [SerializeField] private float _playerEnemySeparationAmount = 1.0f;
 
-        private Tweener _vsTextMeshProUGUIScaleTween;
-        private Tweener _vsTextCanvasGroupFadeTween;
-        private Tweener _mainCameraZoomTween;
-        private Tweener _mainCameraRotationTween;
-        private Tweener _splitScreenCameraZoomTween;
-        private Tweener _splitScreenCameraRotationTween;
+        private Tween _enemySeparationTween;
+        private Tween _playerSeparationTween;
+        private Tween _vsTextMeshProUGUIScaleTween;
+        private Tween _vsTextCanvasGroupFadeTween;
+        private Tween _mainCameraZoomTween;
+        private Tween _mainCameraRotationTween;
+        private Tween _splitScreenCameraZoomTween;
+        private Tween _splitScreenCameraRotationTween;
 
-        public IEnumerator SeparateOverworldPlayerAndEnemy(float duration, Player player, Enemy enemy)
+        public IEnumerator SeparateOverworldPlayerAndEnemy(float duration, Player player, Enemy enemy, bool flipped, Vector3 enemyGridSpaceObjectPosition)
         {
             // TODO: check distance between overworld player and enemy, if they're too close, move the player away
+            Vector3 direction = flipped ? Vector3.right : Vector3.left;
+
+            _enemySeparationTween?.Kill();
+            _playerSeparationTween?.Kill();
+
+            _enemySeparationTween = enemy.transform.DOMove(enemyGridSpaceObjectPosition, duration).SetEase(Ease.InOutQuad);
+            _playerSeparationTween = player.transform.DOMove(enemyGridSpaceObjectPosition + (direction * _playerEnemySeparationAmount), duration).SetEase(Ease.InOutQuad);
 
             yield return new WaitForSeconds(duration);
         }

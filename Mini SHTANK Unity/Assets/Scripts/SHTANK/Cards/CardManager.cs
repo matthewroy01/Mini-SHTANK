@@ -20,13 +20,15 @@ namespace SHTANK.Cards
         public event Action ConfirmedPlayedCards;
 
         public Stack<QueuedCardInfo> QueuedCardInfoStack => _queuedCardInfoStack;
-        
+
         [Header("Prefabs")]
         [SerializeField] private CardObject _cardObjectPrefab;
         [SerializeField] private HandObject _handObjectPrefab;
         [SerializeField] private DeckObject _deckObjectPrefab;
         [SerializeField] private Transform _handsParent;
+
         [Header("References")]
+        [SerializeField] private Camera _uiCamera;
         [SerializeField] private CardPreview _cardPreview;
         [SerializeField] private CanvasGroup _goButtonCanvasGroup;
         [Header("Testing")]
@@ -53,7 +55,7 @@ namespace SHTANK.Cards
         protected override void Awake()
         {
             base.Awake();
-            
+
             _cardObjectPoolEventContainer = new CardObjectPoolEventContainer(_cardObjectPrefab, _handsParent);
             _cardObjectPool = PoolHelper<CardObject>.CreatePool(_cardObjectPoolEventContainer);
 
@@ -65,7 +67,7 @@ namespace SHTANK.Cards
 
             _combatManager = CombatManager.Instance;
         }
-        
+
         public void DrawCards()
         {
             _queuedCardInfoStack.Clear();
@@ -73,7 +75,7 @@ namespace SHTANK.Cards
             for (int i = 0; i < _numberOfHands; ++i)
             {
                 HandObject handObject;
-                
+
                 if (i < _activeHands.Count)
                 {
                     handObject = _activeHands[i];
@@ -90,7 +92,7 @@ namespace SHTANK.Cards
                     CardDefinition cardDefinition = RandomHelper.GetRandomItem(_testCards);
                     CardObject cardObject = _cardObjectPool.Get();
                     cardObject.Initialize(cardDefinition);
-                    
+
                     handObject.TryAddCard(cardObject);
                 }
 
@@ -98,7 +100,7 @@ namespace SHTANK.Cards
                 {
                     handObject.CardObjectList[j].ApplyOffset(j, _numberOfCardsPerHand);
                 }
-                
+
                 if (!_activeHands.Contains(handObject))
                     _activeHands.Add(handObject);
             }
@@ -132,7 +134,7 @@ namespace SHTANK.Cards
             _highestSiblingIndex = int.MinValue;
             _highestIndex = 0;
             _screenSpaceMousePosition = Mouse.current.position.ReadValue();
-            
+
             _FindMousedOverCards();
             _FindHighestCard();
             _SelectCard();
@@ -143,10 +145,10 @@ namespace SHTANK.Cards
                 {
                     if (!handObject.CardsEnabled)
                         continue;
-                    
+
                     foreach (CardObject cardObject in handObject.CardObjectList)
                     {
-                        if (!RectTransformUtility.RectangleContainsScreenPoint(cardObject.ArtContainer, _screenSpaceMousePosition))
+                        if (!RectTransformUtility.RectangleContainsScreenPoint(cardObject.ArtContainer, _screenSpaceMousePosition, _uiCamera))
                             continue;
 
                         _mousedOverCards.Add(cardObject);
@@ -161,7 +163,7 @@ namespace SHTANK.Cards
                     _siblingIndex = _mousedOverCards[i].transform.GetSiblingIndex();
                     if (_siblingIndex <= _highestSiblingIndex)
                         continue;
-                    
+
                     _highestSiblingIndex = _siblingIndex;
                     _highestIndex = i;
                 }
@@ -173,18 +175,18 @@ namespace SHTANK.Cards
                 {
                     if (_selectedCard == null)
                         return;
-                    
+
                     _selectedCard.Deselect();
                     _selectedCard = null;
 
                     return;
                 }
-                
+
                 if (_selectedCard != null)
                 {
                     if (_selectedCard == _mousedOverCards[_highestIndex])
                         return;
-                    
+
                     _selectedCard.Deselect();
                     _selectedCard = _mousedOverCards[_highestIndex];
                     _selectedCard.Select();
@@ -201,7 +203,7 @@ namespace SHTANK.Cards
         {
             if (_queuedCardInfoStack.Count >= _activeHands.Count)
                 return;
-            
+
             if (_selectedCard == null)
                 return;
 
@@ -214,7 +216,7 @@ namespace SHTANK.Cards
             QueuedCardInfo queuedCardInfo = new QueuedCardInfo(_selectedCard, handObject.AssociatedCombatEntity, _combatManager.StoredEnemy);
             _queuedCardInfoStack.Push(queuedCardInfo);
             _cardPreview.AddCard(queuedCardInfo);
-            
+
             UpdateVisualsBasedOnCardCount();
         }
 
@@ -222,15 +224,15 @@ namespace SHTANK.Cards
         {
             if (_queuedCardInfoStack.Count == 0)
                 return;
-            
+
             if (!InputManager.Instance.Cancel)
                 return;
-            
+
             QueuedCardInfo queuedCardInfo = _queuedCardInfoStack.Pop();
             _cardPreview.RemoveCard();
-            
+
             ((HandObject)queuedCardInfo.CardObject.CardContainer).CancelPlayedCard();
-            
+
             UpdateVisualsBasedOnCardCount();
         }
 
@@ -265,11 +267,11 @@ namespace SHTANK.Cards
                 CardObject cardObject = handObject.RemovePlayedCard();
                 _cardObjectPool.Release(cardObject);
             }
-                        
+
             ConfirmedPlayedCards?.Invoke();
-            
+
             UpdateVisualsBasedOnCardCount();
-            
+
             _cardPreview.RemoveAllCards();
         }
     }

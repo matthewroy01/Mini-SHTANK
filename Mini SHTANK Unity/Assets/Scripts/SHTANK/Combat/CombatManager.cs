@@ -17,6 +17,7 @@ namespace SHTANK.Combat
         public CombatEntity StoredEnemy => _storedEnemy;
         public List<CombatEntity> StoredPlayers => _storedPlayers;
         public float CurrentDamageMultiplier => _currentDamageMultiplier;
+        public GridSpaceObject EnemyGridSpaceObject => _enemyGridSpaceObject;
 
         [SerializeField] private GridManager _gridManager;
         [SerializeField] private Transform _combatCenterTransform;

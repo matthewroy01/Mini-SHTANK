@@ -56,7 +56,11 @@ namespace SHTANK.GameStates
 
             if (enemy != null)
             {
-                yield return _combatTransitionHandler.SeparateOverworldPlayerAndEnemy(_separationDuration, _player, enemy);
+                bool flipped = _player.transform.position.x > enemy.transform.position.x;
+
+                enemy.PlayAlertParticleSystem();
+
+                yield return _combatTransitionHandler.SeparateOverworldPlayerAndEnemy(_separationDuration, _player, enemy, flipped, _combatManager.EnemyGridSpaceObject.transform.position);
 
                 yield return _combatTransitionHandler.ZoomInCameras(_zoomInDuration, _player, enemy);
 

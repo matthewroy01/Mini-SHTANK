@@ -104095,6 +104095,7 @@ MonoBehaviour:
   _handObjectPrefab: {fileID: 2879768509523068980, guid: b96f2e4cd27214f4fba9d890f7583b49, type: 3}
   _deckObjectPrefab: {fileID: 0}
   _handsParent: {fileID: 1907909071}
+  _uiCamera: {fileID: 1170185384}
   _cardPreview: {fileID: 1392734229}
   _goButtonCanvasGroup: {fileID: 904170244}
   _testCards:
