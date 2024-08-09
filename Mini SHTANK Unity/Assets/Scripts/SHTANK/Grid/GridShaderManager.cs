@@ -9,6 +9,7 @@ namespace SHTANK.Grid
         [SerializeField] private PlayerMovement _playerMovement;
         [SerializeField] private bool _yIsZero;
 
+        private static readonly int _squareModeProperty = Shader.PropertyToID("_SquareMode");
         private static readonly int _enemyPosition0Property = Shader.PropertyToID("_EnemyPosition0");
         private static readonly int _enemyPosition1Property = Shader.PropertyToID("_EnemyPosition1");
         private static readonly int _enemyPosition2Property = Shader.PropertyToID("_EnemyPosition2");
@@ -61,7 +62,11 @@ namespace SHTANK.Grid
                 Shader.SetGlobalVector(positionPropertyID, enemyPosition);
                 Shader.SetGlobalFloat(distancePropertyID, distanceFromEnemyToPlayer);
             }
+        }
 
+        public void SetSquareMode(bool value)
+        {
+            Shader.SetGlobalInteger(_squareModeProperty, value ? 1 : 0);
         }
     }
 }

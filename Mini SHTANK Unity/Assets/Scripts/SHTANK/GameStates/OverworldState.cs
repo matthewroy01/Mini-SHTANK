@@ -18,6 +18,7 @@ namespace SHTANK.GameStates
             _playerMovement.gameObject.SetActive(true);
             _enemyManager.ToggleEnemies(true);
             _enemyManager.TryKillEnemies();
+            _gridShaderManager.SetSquareMode(false);
         }
 
         public override void ExitState()

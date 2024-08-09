@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
-using SHTANK.Cameras;
 using SHTANK.Combat;
+using SHTANK.Grid;
 using SHTANK.Overworld;
 using UnityEngine;
 using Utility.StateMachine;
@@ -16,6 +16,7 @@ namespace SHTANK.GameStates
         [SerializeField] private CombatManager _combatManager;
         [SerializeField] private Player _player;
         [SerializeField] private EnemyManager _enemyManager;
+        [SerializeField] private GridShaderManager _gridShaderManager;
         [Header("Durations")]
         [SerializeField] private float _separationDuration;
         [SerializeField] private float _zoomInDuration;
@@ -67,6 +68,9 @@ namespace SHTANK.GameStates
                 _combatTransitionHandler.DoVSEffect();
 
                 yield return new WaitForSeconds(_holdDuration);
+
+                _gridShaderManager.SetSquareMode(true);
+                _gridShaderManager.UpdateGridVisuals();
 
                 yield return _combatTransitionHandler.ZoomOutCameras(_zoomOutDuration, Manager.CameraManager.CombatCameraStateParameters);
             }
